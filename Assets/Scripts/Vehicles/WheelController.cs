@@ -9,7 +9,17 @@ public class WheelController : MonoBehaviour
     CarSpec spec;
     bool isFrontWheel;
     bool isDrivenWheel;
-    public float WheelRPM { get { return wheel.rpm; } }
+    public float WheelRPM { 
+        get 
+        {
+            float rpm = wheel.rpm;
+            if (float.IsNaN(rpm)|| float.IsInfinity(rpm)|| Mathf.Abs(rpm) < 0.1f)
+            {
+                rpm = 0f;
+            }
+            return rpm; 
+        }
+    }
     public bool IsDrivenWheel => isDrivenWheel;
     float maxSteerAngle = 30f;
     float maxBrakeTorque;
@@ -37,7 +47,7 @@ public class WheelController : MonoBehaviour
 
     public void ApplyInput(float torque, float brakeTorque, float steer)
     {
-        // RPMに応じて単調に増える
+        // RPMに応じて単調に増える回転抵抗
         wheel.wheelDampingRate = Mathf.Lerp(0.05f, 0.3f, Mathf.InverseLerp(0f, 1000f, Mathf.Abs(wheel.rpm)));
         // 駆動トルク制御
         wheel.motorTorque = isDrivenWheel ? torque : 0f;

@@ -38,69 +38,87 @@ public class EngineModel
     /// </summary>
     public float CurrentRPM => currentRPM;
     CarSpec spec;
+    float engineAngularVelocity;
 
     public EngineModel(CarSpec spec)
     {
         this.spec = spec;
-        updateMethods = new Dictionary<EngineState, Action<float, float, float>>
-        {
-            { EngineState.Stalled, UpdateStalled },
-            { EngineState.Running, UpdateRunning }
-        };
         maxRPM = spec.MaxRPM;
         idleRPM = spec.IdleRPM;
         torqueCurve = spec.TorqueCurve;
         flywheelInertia = spec.FlywheelInertia;
         pumpingLossFactor = spec.PumpingLossFactor;
+        engineAngularVelocity = currentRPM * 2f * Mathf.PI / 60f;
     }
-    /// <summary>
-    /// エンジン更新
-    /// </summary>
-    /// <param name="throttle">0～1</param>
-    /// <param name="externalTorque">外部から伝わるトルク（クラッチやタイヤからの戻り）</param>
-    /// <param name="deltaTime">時間差分</param>
-    public void UpdateEngine(float throttle, float externalTorque, float deltaTime)
+    
+    public void UpdateTorque(float throttle)
     {
-        updateMethods[currentState].Invoke(throttle, externalTorque, deltaTime);
-    }
-    void UpdateRunning(float throttle, float externalTorque, float deltaTime)
-    {
-        //抵抗などを考慮しない場合のトルク
-        float engineTorque = torqueCurve.Evaluate(currentRPM) * throttle;
-        //吸排気抵抗ぶんで引かれるトルク
-        float lossTorque = engineTorque * pumpingLossFactor;
-        //実際のトルク値
-        float netTorque = engineTorque + externalTorque - lossTorque;
+        if (currentState == EngineState.Stalled)
+        {
+            OutputTorque = 0f;
+            return;
+        }
+        throttle += UpdateIdleControl(throttle);
+        // スロットルに応じた理論トルク
+        float baseTorque = torqueCurve.Evaluate(currentRPM) * throttle;
+        
+        // 損失分を差し引く
+        float lossTorque = baseTorque * pumpingLossFactor;
 
-        //トルクから角加速度を求める（慣性モーメントに反比例）
-        //単位：rad/s^2（ラジアン毎秒毎秒）
-        //→ トルクが大きい or 慣性が小さいほど回転が速く変化する
+        // エンジンの純出力トルク
+        OutputTorque = baseTorque - lossTorque;
+    }
+    public void ApplyExternalTorque(float externalTorque, float deltaTime)
+    {
+        if (currentState == EngineState.Stalled)
+        {
+            currentRPM = Mathf.MoveTowards(currentRPM, 0f, 2000f * deltaTime);
+            return;
+        }
+        engineAngularVelocity = currentRPM * 2f * Mathf.PI / 60f;
+        // 出力トルクと外部トルク（反力）を合わせて慣性応答を計算
+        float netTorque = OutputTorque - externalTorque;
+        float mechanicalLoss = 0.02f * currentRPM; // 調整値（実験でチューニング）
+        netTorque -= mechanicalLoss;
+        // 角加速度(rad/s^2)
         float angularAcceleration = netTorque / flywheelInertia;
 
-        //角加速度 * 経過時間で角速度の変化量を求める
-        //単位はrad/s（ラジアン毎秒）
-        float angularVelocityChange = angularAcceleration * deltaTime;
+        // 角速度更新
+        engineAngularVelocity += angularAcceleration * deltaTime;
 
-        //角速度の変化量(rad/s)を回転数(RPM)の変化量に変換
-        //角速度の単位は秒あたり、回転数は分あたりなので時間単位を合わせる（×60）
-        //また1回転 = 2π[rad] なので角度単位を回転に変換（÷2π）
-        //よって、1 [rad/s] = 60 / (2π) [RPM]
-        float rpmChange = angularVelocityChange * (60f / (2f * Mathf.PI));
+        // RPM更新
+        currentRPM = Mathf.Clamp(
+            engineAngularVelocity * 60f / (2f * Mathf.PI),
+            0f,
+            maxRPM
+        );
 
-        // 現在の回転数に加算して更新
-        currentRPM += rpmChange;
-
-        currentRPM = Mathf.Clamp(currentRPM, 0, maxRPM);
-
-        OutputTorque = netTorque;
-
+        // エンジン停止判定
         if (currentRPM < idleRPM * 0.7f)
         {
             currentState = EngineState.Stalled;
         }
     }
-    void UpdateStalled(float throttle, float externalTorque, float deltaTime)
+    /// <summary>
+    /// アイドル制御
+    /// </summary>
+    /// <param name="throttle"></param>
+    /// <returns>スロットル補正値</returns>
+    float UpdateIdleControl(float throttle)
     {
-        Mathf.MoveTowards(currentRPM, 0, 2000f * deltaTime);
+        float effectiveThrottle = 0f;
+        if (throttle < 0.1f)
+        {
+            float rpmDiff = idleRPM - currentRPM;
+
+            // 最低限開けておくアイドルベース
+            float baseIdleThrottle = 0.07f;
+
+            // 回転が下がったらさらに開ける（P制御）
+            float correction = Mathf.Clamp(rpmDiff * 0.005f, 0f, 0.2f);
+
+            effectiveThrottle = baseIdleThrottle + correction;
+        }
+        return effectiveThrottle;
     }
 }

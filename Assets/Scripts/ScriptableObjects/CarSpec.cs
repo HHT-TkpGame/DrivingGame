@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewCarSpecs", menuName = "CarSpecs")]
+[CreateAssetMenu(fileName = "NewCarSpecs", menuName = "CarSpecs/Spec")]
 public class CarSpec : ScriptableObject
 {
     [Header("EngineSpec")]

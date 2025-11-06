@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class VehicleController : MonoBehaviour
 {
+    [SerializeField] StatusUITemp tempUI;//デバッグ用　後々削除
     [SerializeField] VehicleInputHandler inputHandler;
     [SerializeField] CarSpec carSpec;
+    [SerializeField] ClutchCurve clutchCurve;
     //タイヤ1つ1つのクラス
     //見やすくするため配列でまとめない
     [SerializeField] WheelController wheelFL;
@@ -26,7 +28,7 @@ public class VehicleController : MonoBehaviour
     {
         engine = new EngineModel(carSpec);
         transmission = new TransmissionModel(carSpec);
-        clutch = new ClutchModel(inputHandler);
+        clutch = new ClutchModel(inputHandler, clutchCurve.Curve);
         inputHandler.OnGearPressed += transmission.SetGear;
         wheels = new WheelController[]{
             wheelFR,
@@ -34,14 +36,13 @@ public class VehicleController : MonoBehaviour
             wheelRL,
             wheelRR
         };
-        foreach (var wheel in wheels)
-        {
-            if(wheel.IsDrivenWheel)
-            {
-                drivenWheelCount++;
-            }
-        }
+        tempUI.Initialize(
+            clutch,
+            transmission,
+            engine
+        );
     }
+
     void OnDestroy()
     {
         inputHandler.OnGearPressed -= transmission.SetGear;
@@ -50,52 +51,59 @@ public class VehicleController : MonoBehaviour
     {
         transmission.SetGear(0);
         InitWheels(carSpec.IsFrontDriven);
+        foreach (var wheel in wheels)
+        {
+            if (wheel.IsDrivenWheel)
+            {
+                drivenWheelCount++;
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         acceleratorAxis = inputHandler.AccelerationAxis;
-        clutchAxis = inputHandler.ClutchAxis;
+        clutchAxis = clutch.Engagement;
         brakeAxis = inputHandler.BrakeAxis;
         steerAxis = inputHandler.SteerAxis;
+        Debug.Log($"accel{acceleratorAxis}\nclutch{clutchAxis}\nbrake{brakeAxis}\nsteer{steerAxis}");
     }
     void FixedUpdate()
     {
         float dt = Time.fixedDeltaTime;
-        float averageDrivenWheelRpm = 0f;
-        float summedRpm = 0f;
-        foreach (WheelController wheel in wheels)
+        float averageDrivenWheelRpm = GetAverageDrivenWheelRpm();
+        UpdateDrivetrain(averageDrivenWheelRpm, dt);
+    }
+
+    float GetAverageDrivenWheelRpm()
+    {
+        float sum = 0f;
+        foreach (var wheel in wheels)
         {
             if (wheel.IsDrivenWheel)
             {
-                summedRpm += wheel.WheelRPM;
+                sum += wheel.WheelRPM;
             }
         }
-        averageDrivenWheelRpm = summedRpm / drivenWheelCount;
-
-        float engineTorque = engine.OutputTorque;
-        float returnTorque = 
-        transmission.CalculateReturnTorque(
+        return sum / drivenWheelCount;
+    }
+    void UpdateDrivetrain(float avgDrivenWheelRpm, float deltaTime)
+    {
+        engine.UpdateTorque(acceleratorAxis);
+        float returnTorque = transmission.CalculateReturnTorque(
             engine.CurrentRPM,
-            averageDrivenWheelRpm,
-            clutchAxis,
-            dt
+            avgDrivenWheelRpm,
+            clutchAxis
         );
-        float outputTorque = 
+        engine.ApplyExternalTorque(returnTorque, deltaTime);
+        float drivenTorque =
         transmission.CalculateDrivenTorque(
-            engineTorque, 
+            engine.OutputTorque,
             clutchAxis,
             drivenWheelCount
         );
-
-        engine.UpdateEngine(
-            acceleratorAxis, 
-            returnTorque, 
-            dt
-        );
-        float drivenTorque = outputTorque;
-        foreach ( WheelController wheel in wheels )
+        foreach (WheelController wheel in wheels)
         {
             wheel.ApplyInput(drivenTorque, brakeAxis, steerAxis);
         }

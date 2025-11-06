@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 public class VehicleInputHandler : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class VehicleInputHandler : MonoBehaviour
     public float AccelerationAxis {  get; private set; }
     public float BrakeAxis {  get; private set; }
     public float ClutchAxis {  get; private set; }
+    float clutchAxis;
+    float keyboardClutchAxis;
+    public readonly int CLUTCH_MAX_INPUT = 1;
     public event Action<int> OnGearPressed;
     
     public void OnSteerInput(InputAction.CallbackContext context)
@@ -23,9 +27,41 @@ public class VehicleInputHandler : MonoBehaviour
     {
         BrakeAxis = context.ReadValue<float>();
     }
+    /// <summary>
+    /// クラッチの入力を取得する
+    /// ハンコン・キーボード両方が使う
+    /// ハンコンだと0～1,キーボードは0 or 0.5
+    /// </summary>
+    /// <param name="context"></param>
     public void OnClutchInput(InputAction.CallbackContext context)
     {
-        ClutchAxis = context.ReadValue<float>();
+        clutchAxis = context.ReadValue<float>();
+        CombineClutchAxis(context.control.device);
+    }
+    /// <summary>
+    /// キーボードで0.5の入力を扱うためのメソッド
+    /// </summary>
+    /// <param name="context"></param>
+    public void OnClutchInputByKeyboard(InputAction.CallbackContext context)
+    {
+        keyboardClutchAxis = context.ReadValue<float>();
+        CombineClutchAxis(context.control.device);
+    }
+    /// <summary>
+    /// ハンコンの場合はそのままの値を使い
+    /// キーボードの場合に2ボタンの入力を合算する
+    /// </summary>
+    /// <param name="device"></param>
+    void CombineClutchAxis(InputDevice device)
+    {
+        if (device is Keyboard)
+        {
+            ClutchAxis = Mathf.Clamp01(clutchAxis + keyboardClutchAxis);
+        }
+        else
+        {
+            ClutchAxis = clutchAxis;
+        }
     }
     void HandleGearInput(InputAction.CallbackContext context, int gear)
     {

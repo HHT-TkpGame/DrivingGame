@@ -57,43 +57,41 @@ public class TransmissionModel
     }
     public float CalculateDrivenTorque(float engineTorque, float clutchEngagement, int drivenWheelCount)
     {
-        if(currentState == GearState.Neutral) { return 0f; }
-        return engineTorque * CurrentGearRatio * clutchEngagement / drivenWheelCount;
+        if(currentState == GearState.Neutral || clutchEngagement < 0.01) { return 0f; }
+        float driveTorque = engineTorque * clutchEngagement;
+        float totalRatio = currentGearRatio * finalDriveRatio;
+        float wheelTorque = driveTorque * totalRatio / drivenWheelCount;
+        return wheelTorque;
     }
 
-        /// <summary>
-        /// エンジンとホイールの回転数から戻りトルクを計算する
-        /// </summary>
-        /// <param name="engineRPM"></param>
-        /// <param name="wheelRPM"></param>
-        /// <param name="flywheelInertia"></param>
-        /// <returns></returns>
-        public float CalculateReturnTorque(
+    /// <summary>
+    /// エンジンとホイールの回転数から戻りトルクを計算する
+    /// </summary>
+    /// <param name="engineRPM"></param>
+    /// <param name="wheelRPM"></param>
+    /// <param name="flywheelInertia"></param>
+    /// <returns></returns>
+    public float CalculateReturnTorque(
         float engineRPM,
         float wheelRPM,
-        float clutchEngagement,
-        float deltaTime
+        float clutchEngagement
     ){
+        Debug.Log($"e:{engineRPM},w:{wheelRPM},c:{clutchEngagement}");
         //回転の速度をrad/sに変換
-        float engineOmega = engineRPM * Mathf.PI * 2f / 60f; // rad/s
-        float wheelOmega = wheelRPM * Mathf.PI * 2f / 60f;   // rad/s
+        float engineOmega = engineRPM * Mathf.PI * 2f / 60f; //rad/s
+        float wheelOmega = wheelRPM * Mathf.PI * 2f / 60f;   //rad/s
 
-        if (currentState == GearState.Neutral)
+        if (currentState == GearState.Neutral || clutchEngagement < 0.01)
         {
-            //ニュートラルでも多少は抵抗があるので少しだけ負荷トルクを返す
-            float resistanceCoeff = 0.002f; // 調整用係数
-            return -engineOmega * resistanceCoeff;
-        }        
-        // ギア比（正の値）
+            return 0f;
+        }
+        // ギア比から伝達側の回転速度を算出
         float ratio = currentGearRatio * finalDriveRatio;
-        // 回転差を求める
         float omegaDifference = engineOmega - (wheelOmega * ratio);
-        // クラッチ接続率に応じて回転差を比例的に減衰させ、滑らかな戻りトルクを作る
-        float smoothedDifference = Mathf.Lerp(0f, omegaDifference, clutchEngagement);
-        float angularAccel = smoothedDifference / deltaTime;
 
-        float returnTorque = -flywheelInertia * angularAccel;
-
+        float dampingCoeff = 0.5f; // 調整値（0.1～5くらいでチューニング）
+        float returnTorque = flywheelInertia * omegaDifference * dampingCoeff * clutchEngagement;
+        Debug.Log(returnTorque);
         return returnTorque;
     }
 }
