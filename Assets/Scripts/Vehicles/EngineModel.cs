@@ -37,20 +37,23 @@ public class EngineModel
     /// 現在の回転数
     /// </summary>
     public float CurrentRPM => currentRPM;
-    CarSpec spec;
     float engineAngularVelocity;
 
     public EngineModel(CarSpec spec)
     {
-        this.spec = spec;
         maxRPM = spec.MaxRPM;
         idleRPM = spec.IdleRPM;
         torqueCurve = spec.TorqueCurve;
         flywheelInertia = spec.FlywheelInertia;
         pumpingLossFactor = spec.PumpingLossFactor;
+
         engineAngularVelocity = currentRPM * 2f * Mathf.PI / 60f;
     }
     
+    /// <summary>
+    /// 外部トルクを考慮しない純トルク計算
+    /// </summary>
+    /// <param name="throttle"></param>
     public void UpdateTorque(float throttle)
     {
         if (currentState == EngineState.Stalled)
@@ -68,6 +71,12 @@ public class EngineModel
         // エンジンの純出力トルク
         OutputTorque = baseTorque - lossTorque;
     }
+
+    /// <summary>
+    /// トランスミッションの反力トルクを適用し、回転数を更新する
+    /// </summary>
+    /// <param name="externalTorque"></param>
+    /// <param name="deltaTime"></param>
     public void ApplyExternalTorque(float externalTorque, float deltaTime)
     {
         if (currentState == EngineState.Stalled)
@@ -78,13 +87,20 @@ public class EngineModel
         engineAngularVelocity = currentRPM * 2f * Mathf.PI / 60f;
         // 出力トルクと外部トルク（反力）を合わせて慣性応答を計算
         float netTorque = OutputTorque - externalTorque;
-        float mechanicalLoss = 0.02f * currentRPM; // 調整値（実験でチューニング）
+        float viscousLoss = 0.000003f * currentRPM * currentRPM; // 空気抵抗的な損失
+        float frictionLoss = 6f * (currentRPM / maxRPM);      // 機械摩擦
+        float mechanicalLoss = viscousLoss + frictionLoss;
+        
+
+        //float mechanicalLoss = 0.02f * currentRPM;
         netTorque -= mechanicalLoss;
         // 角加速度(rad/s^2)
         float angularAcceleration = netTorque / flywheelInertia;
 
         // 角速度更新
         engineAngularVelocity += angularAcceleration * deltaTime;
+
+        //Debug.Log($"External:{externalTorque},\n RPM:{currentRPM},\n Torque:{OutputTorque},\n MechaLos:{mechanicalLoss},\n NetTorque:{netTorque},\n AngularVelocity:{engineAngularVelocity}");
 
         // RPM更新
         currentRPM = Mathf.Clamp(
@@ -94,7 +110,8 @@ public class EngineModel
         );
 
         // エンジン停止判定
-        if (currentRPM < idleRPM * 0.7f)
+        if (currentRPM < idleRPM * 0.7f &&
+             netTorque < 0)
         {
             currentState = EngineState.Stalled;
         }
@@ -111,13 +128,10 @@ public class EngineModel
         {
             float rpmDiff = idleRPM - currentRPM;
 
-            // 最低限開けておくアイドルベース
-            float baseIdleThrottle = 0.07f;
-
             // 回転が下がったらさらに開ける（P制御）
             float correction = Mathf.Clamp(rpmDiff * 0.005f, 0f, 0.2f);
 
-            effectiveThrottle = baseIdleThrottle + correction;
+            effectiveThrottle += correction;
         }
         return effectiveThrottle;
     }

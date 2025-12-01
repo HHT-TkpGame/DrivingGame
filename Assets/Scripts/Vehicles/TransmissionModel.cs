@@ -13,13 +13,12 @@ public class TransmissionModel
     }
     CarSpec spec;
     float currentGearRatio = 0;
-    public float CurrentGearRatio => currentGearRatio * finalDriveRatio;
+    public int CurrentGear {  get; private set; }
     GearState currentState = GearState.Neutral;
 
     float[] gearRatios;// 1速～5速
     float reverseGearRatios;
     float finalDriveRatio;
-    float flywheelInertia;
 
     public TransmissionModel(CarSpec spec)
     {
@@ -31,7 +30,6 @@ public class TransmissionModel
         gearRatios = spec.GearRatios;
         reverseGearRatios = spec.ReverseRatio;
         finalDriveRatio = spec.FinalDriveRatio;
-        flywheelInertia = spec.FlywheelInertia;
     }
     /// <summary>
     /// ギアを切り替える（ギア番号の妥当性は呼び出し側で保証する）
@@ -39,6 +37,7 @@ public class TransmissionModel
     /// <param name="newGear">ギア数（0はN,-1はR）</param>
     public void SetGear(int newGear)
     {
+        CurrentGear = newGear;
         switch(newGear)
         {
             case -1:
@@ -76,7 +75,7 @@ public class TransmissionModel
         float wheelRPM,
         float clutchEngagement
     ){
-        Debug.Log($"e:{engineRPM},w:{wheelRPM},c:{clutchEngagement}");
+        //Debug.Log($"e:{engineRPM},w:{wheelRPM},c:{clutchEngagement}");
         //回転の速度をrad/sに変換
         float engineOmega = engineRPM * Mathf.PI * 2f / 60f; //rad/s
         float wheelOmega = wheelRPM * Mathf.PI * 2f / 60f;   //rad/s
@@ -85,13 +84,15 @@ public class TransmissionModel
         {
             return 0f;
         }
-        // ギア比から伝達側の回転速度を算出
+        //ギア比から伝達側の回転速度を算出
         float ratio = currentGearRatio * finalDriveRatio;
-        float omegaDifference = engineOmega - (wheelOmega * ratio);
+        float omegaDifference = engineOmega - (wheelOmega / ratio);
 
-        float dampingCoeff = 0.5f; // 調整値（0.1～5くらいでチューニング）
-        float returnTorque = flywheelInertia * omegaDifference * dampingCoeff * clutchEngagement;
-        Debug.Log(returnTorque);
+        //float drivenInertia = 2.5f; 
+        float dampingCoeff = 2f; //調整値（0.1～5くらい）
+        float baseInertia = 0.5f;
+        float drivenInertia = baseInertia * ratio * ratio;
+        float returnTorque = drivenInertia * omegaDifference * dampingCoeff * clutchEngagement;
         return returnTorque;
     }
 }

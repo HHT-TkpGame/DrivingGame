@@ -32,13 +32,15 @@ public class CarSpec : ScriptableObject
 
 
     [Header("WheelSpec")]
-
+    [SerializeField, Tooltip("ホイール半径(m)")]
+    float wheelRadius;
     [SerializeField, Tooltip("駆動方式　trueだとFF,falseだとFR")]
     bool isFrontDriven;
     [SerializeField, Tooltip("フロント1輪あたりの最大ブレーキトルク [Nm]")]
     float maxBrakeTorqueFront;//レクサスLFAだと大体1800
     [SerializeField, Tooltip("リア1輪あたりの最大ブレーキトルク [Nm]")]
     float maxBrakeTorqueRear;//レクサスLFAだと大体900
+    public float WheelRadius => wheelRadius;
     public bool IsFrontDriven => isFrontDriven;
     public float MaxBrakeTorqueFront => maxBrakeTorqueFront;
     public float MaxBrakeTorqueRear => maxBrakeTorqueRear;

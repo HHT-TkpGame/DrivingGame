@@ -8,12 +8,13 @@ public class ClutchModel
     VehicleInputHandler inputHandler;
     AnimationCurve clutchCurve;
     //クラッチの接続状態(1が接続, 0が切断)
-    //InputHandlerからの入力は押されていない時が0
-    //本来はクラッチを踏んでいない時に接続状態が1になるべきなので値を反対にする
+    //InputHandlerからの入力は押されていない時が0を返す
+    //本来は入力がない時に接続状態が1になるべきなので値を反対にする
     public float Engagement { 
         get 
-        { 
-            float raw = inputHandler.CLUTCH_MAX_INPUT - inputHandler.ClutchAxis;
+        {
+            float raw = 1 - inputHandler.ClutchAxis;
+            Debug.Log(raw);
             return clutchCurve.Evaluate(raw); 
         }
     } 

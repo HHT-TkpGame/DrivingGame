@@ -16,6 +16,15 @@ public class VehicleController : MonoBehaviour
     EngineModel engine;
     TransmissionModel transmission;
     ClutchModel clutch;
+    Rigidbody rb;
+    public float SpeedKPH
+    {
+        get
+        {
+            float mps = Mathf.Abs(Vector3.Dot(rb.linearVelocity, transform.forward));
+            return mps * 3.6f;
+        }
+    }
 
     int drivenWheelCount;
     float acceleratorAxis;
@@ -39,8 +48,11 @@ public class VehicleController : MonoBehaviour
         tempUI.Initialize(
             clutch,
             transmission,
-            engine
+            engine,
+            this,
+            carSpec.MaxRPM
         );
+        rb = GetComponent<Rigidbody>();
     }
 
     void OnDestroy()
@@ -50,7 +62,7 @@ public class VehicleController : MonoBehaviour
     void Start()
     {
         transmission.SetGear(0);
-        InitWheels(carSpec.IsFrontDriven);
+        InitWheels(carSpec.IsFrontDriven, carSpec.WheelRadius);
         foreach (var wheel in wheels)
         {
             if (wheel.IsDrivenWheel)
@@ -74,6 +86,11 @@ public class VehicleController : MonoBehaviour
         float dt = Time.fixedDeltaTime;
         float averageDrivenWheelRpm = GetAverageDrivenWheelRpm();
         UpdateDrivetrain(averageDrivenWheelRpm, dt);
+        //ä»à’ìIÇ»ãÛãCíÔçRçƒåª
+        float speed = rb.linearVelocity.magnitude;
+        float airDrag = 0.4f * speed * speed;
+        Vector3 dragForce = -rb.linearVelocity.normalized * airDrag;
+        rb.AddForce(dragForce);
     }
 
     float GetAverageDrivenWheelRpm()
@@ -109,11 +126,11 @@ public class VehicleController : MonoBehaviour
         }
     }
 
-    void InitWheels(bool isFrontDriven)
+    void InitWheels(bool isFrontDriven, float wheelRadius)
     {
-        wheelFL.Init(carSpec, true, isFrontDriven);
-        wheelFR.Init(carSpec, true, isFrontDriven);
-        wheelRL.Init(carSpec, false, !isFrontDriven);
-        wheelRR.Init(carSpec, false, !isFrontDriven);
+        wheelFL.Init(carSpec, true, isFrontDriven, wheelRadius);
+        wheelFR.Init(carSpec, true, isFrontDriven, wheelRadius);
+        wheelRL.Init(carSpec, false, !isFrontDriven, wheelRadius);
+        wheelRR.Init(carSpec, false, !isFrontDriven, wheelRadius);
     }
 }

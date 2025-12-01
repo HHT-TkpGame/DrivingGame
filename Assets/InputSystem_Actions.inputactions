@@ -8,37 +8,37 @@
             "actions": [
                 {
                     "name": "Steering",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "10884068-b756-4f16-b5e4-e29687b86fb7",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Accelerator",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "082ce5e8-4ce0-497a-8516-8dab99b6049e",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Brake",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "f2102adc-dd68-429a-ae48-0538d4b4752d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Clutch",
                     "type": "Value",
                     "id": "ca9a3e3e-c9a6-4ff2-9bba-d01402edc351",
                     "expectedControlType": "Axis",
-                    "processors": "Clamp(max=1)",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -160,6 +160,17 @@
                 },
                 {
                     "name": "",
+                    "id": "49a369d1-df08-4046-a96d-fe8cbec4f448",
+                    "path": "<HID::44F B677>/stick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steering",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "64e4c515-bd2f-4e25-8fe6-67806e14d5f0",
                     "path": "<Keyboard>/w",
                     "interactions": "",
@@ -171,8 +182,30 @@
                 },
                 {
                     "name": "",
+                    "id": "19d1682a-1312-4802-ab04-1f03c07e220d",
+                    "path": "<HID::44F B677>/rz",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Accelerator",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "cfc57859-585d-4634-a2da-a21fd2096386",
                     "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "79b7586b-d990-4256-9d02-a72de4796bde",
+                    "path": "<HID::44F B677>/stick/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -204,8 +237,30 @@
                 },
                 {
                     "name": "",
+                    "id": "dd3e23db-8ea6-4938-b78a-526b59718747",
+                    "path": "<HID::44F B677>/button3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Neutral",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9b26e7d3-79a6-4a94-99ea-3bc4fffdf478",
                     "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gear1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "354e91c2-f13c-4426-a9d8-6cf230f51409",
+                    "path": "<HID::44F B677>/button5",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -226,8 +281,30 @@
                 },
                 {
                     "name": "",
+                    "id": "c81b586e-db35-42b8-ab67-1506ab6b71f5",
+                    "path": "<HID::44F B677>/button6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gear2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c97193dd-fe01-4bd8-9a7e-c8ee86a10a47",
                     "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gear3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a8b093b9-10f5-45d1-ae37-17e78efd2232",
+                    "path": "<HID::44F B677>/button4",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -285,6 +362,17 @@
                     "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "Clamp(max=0.5)",
+                    "groups": "",
+                    "action": "Clutch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "87291cde-afec-4d18-a7ff-594c1aeafc8e",
+                    "path": "<HID::44F B677>/slider",
+                    "interactions": "",
+                    "processors": "",
                     "groups": "",
                     "action": "Clutch",
                     "isComposite": false,

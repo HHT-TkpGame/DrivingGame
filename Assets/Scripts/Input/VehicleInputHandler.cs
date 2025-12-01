@@ -1,68 +1,84 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 
 public class VehicleInputHandler : MonoBehaviour
 {
     [SerializeField] PlayerInput input;
+    InputAction clutchAct;
+    InputAction clutchKeyboardAct;
+    InputAction accelAct;
+    InputAction brakeAct;
+    InputAction steerAct;
     public float SteerAxis {  get; private set; }
     public float AccelerationAxis {  get; private set; }
     public float BrakeAxis {  get; private set; }
     public float ClutchAxis {  get; private set; }
-    float clutchAxis;
+    float mainClutchAxis;
     float keyboardClutchAxis;
-    public readonly int CLUTCH_MAX_INPUT = 1;
     public event Action<int> OnGearPressed;
-    
-    public void OnSteerInput(InputAction.CallbackContext context)
+
+    private void Awake()
     {
-        SteerAxis = context.ReadValue<float>();
+        clutchAct = input.actions["Clutch"];
+        clutchKeyboardAct = input.actions["ClutchByKeyboard"];
+        accelAct = input.actions["Accelerator"];
+        brakeAct = input.actions["Brake"];
+        steerAct = input.actions["Steering"];
     }
-    public void OnAccelerationInput(InputAction.CallbackContext context)
+    void Update()
     {
-        AccelerationAxis = context.ReadValue<float>();
+        AccelerationAxis = ProcessingHandleControllerInput(
+            true,
+            accelAct.ReadValue<float>(),
+            accelAct.activeControl?.device
+        );
+        BrakeAxis = ProcessingHandleControllerInput(
+            false,
+            brakeAct.ReadValue<float>(),
+            brakeAct.activeControl?.device
+        );
+        SteerAxis = steerAct.ReadValue<float>();
+        ClutchAxis = ProcessingClutchInput();
     }
-    public void OnBrakeInput(InputAction.CallbackContext context)
-    {
-        BrakeAxis = context.ReadValue<float>();
-    }
+
     /// <summary>
-    /// クラッチの入力を取得する
-    /// ハンコン・キーボード両方が使う
-    /// ハンコンだと0～1,キーボードは0 or 0.5
+    /// ハンコン・キーボード入力を考慮し加工した入力を返す
     /// </summary>
-    /// <param name="context"></param>
-    public void OnClutchInput(InputAction.CallbackContext context)
+    /// <returns></returns>
+    float ProcessingClutchInput()
     {
-        clutchAxis = context.ReadValue<float>();
-        CombineClutchAxis(context.control.device);
-    }
-    /// <summary>
-    /// キーボードで0.5の入力を扱うためのメソッド
-    /// </summary>
-    /// <param name="context"></param>
-    public void OnClutchInputByKeyboard(InputAction.CallbackContext context)
-    {
-        keyboardClutchAxis = context.ReadValue<float>();
-        CombineClutchAxis(context.control.device);
-    }
-    /// <summary>
-    /// ハンコンの場合はそのままの値を使い
-    /// キーボードの場合に2ボタンの入力を合算する
-    /// </summary>
-    /// <param name="device"></param>
-    void CombineClutchAxis(InputDevice device)
-    {
-        if (device is Keyboard)
+        mainClutchAxis = ProcessingHandleControllerInput(
+            false,
+            clutchAct.ReadValue<float>(),
+            clutchAct.activeControl?.device
+        );
+        keyboardClutchAxis = clutchKeyboardAct.ReadValue<float>();
+
+        //キーボードのみの入力で、0か1しかないので0比較でOK
+        if (keyboardClutchAxis == 0f)
         {
-            ClutchAxis = Mathf.Clamp01(clutchAxis + keyboardClutchAxis);
+            return mainClutchAxis;
         }
-        else
-        {
-            ClutchAxis = clutchAxis;
-        }
+        return Mathf.Clamp01(mainClutchAxis + keyboardClutchAxis);
     }
+
+    /// <summary>
+    /// ハンコンの入力だった場合、ペダルの入力値が-1～1なので0～1に変換する
+    /// 現在だとアクセル・ブレーキ・クラッチの3つ
+    /// </summary>
+    /// <param name="negate">反転が必要かどうか</param>
+    /// <param name="inputValue"></param>
+    /// <returns></returns>
+    float ProcessingHandleControllerInput(bool negate, float inputValue, InputDevice device)
+    {
+        if (device.name != "44F B677") { return inputValue; }
+        int v = negate? -1 : 1;
+        inputValue = (inputValue * v + 1) / 2; 
+        return inputValue;
+    }
+
+
     void HandleGearInput(InputAction.CallbackContext context, int gear)
     {
         if (context.performed)

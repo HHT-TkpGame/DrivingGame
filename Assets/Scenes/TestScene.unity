@@ -148,7 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8203b41c1d255a740ab6b9fe6010162d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carSpec: {fileID: 11400000, guid: db2df08d95ab3e04083aebe4d935274e, type: 2}
+  handler: {fileID: 1164029233}
+  clutch: {fileID: 11400000, guid: ee27b74bf2737234e85486fd13ea360e, type: 2}
 --- !u!4 &159375459
 Transform:
   m_ObjectHideFlags: 0
@@ -496,6 +497,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &798952578
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 798952580}
+  - component: {fileID: 798952579}
+  m_Layer: 0
+  m_Name: TransmissionTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &798952579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798952578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2151ef3db1aa949b623f05dd263f46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carSpec: {fileID: 11400000, guid: db2df08d95ab3e04083aebe4d935274e, type: 2}
+--- !u!4 &798952580
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798952578}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.2487836, y: 1.517441, z: 0.1812703}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1164029229
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,6 +551,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1164029231}
+  - component: {fileID: 1164029233}
+  - component: {fileID: 1164029232}
   m_Layer: 0
   m_Name: InputHandler
   m_TagString: Untagged
@@ -527,6 +575,298 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1164029232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164029229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnSteerInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 10884068-b756-4f16-b5e4-e29687b86fb7
+    m_ActionName: 'Player/Steering[/Keyboard/a,/Keyboard/d,/44F B677/stick/x]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnAccelerationInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 082ce5e8-4ce0-497a-8516-8dab99b6049e
+    m_ActionName: 'Player/Accelerator[/Keyboard/w,/44F B677/rz]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnBrakeInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f2102adc-dd68-429a-ae48-0538d4b4752d
+    m_ActionName: 'Player/Brake[/Keyboard/s,/44F B677/stick/y]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnClutchInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ca9a3e3e-c9a6-4ff2-9bba-d01402edc351
+    m_ActionName: 'Player/Clutch[/Keyboard/shift,/44F B677/slider]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnClutchInputByKeyboard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 61b24156-65c7-443c-9733-ccf867636425
+    m_ActionName: 'Player/ClutchByKeyboard[/Keyboard/ctrl]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnNeutralInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d5eb89c9-279f-419b-b2b6-7f64fb025bd5
+    m_ActionName: 'Player/Neutral[/Keyboard/7,/44F B677/button3]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnGear1Input
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 42b3b099-a10a-47d0-9ebd-292789e3a43d
+    m_ActionName: 'Player/Gear1[/Keyboard/1,/44F B677/button5]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnGear2Input
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: dec42720-f31d-495e-a891-31a9af1aa80d
+    m_ActionName: 'Player/Gear2[/Keyboard/2,/44F B677/button6]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnGear3Input
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e73fc6f5-efa0-406c-b675-572bd3fa421b
+    m_ActionName: 'Player/Gear3[/Keyboard/3,/44F B677/button4]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnGear4Input
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8d3b6e9d-faba-4aae-b10f-0f7ef63efeb3
+    m_ActionName: 'Player/Gear4[/Keyboard/4]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnGear5Input
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a71af427-8399-4cb9-bac4-c85215e9e95a
+    m_ActionName: 'Player/Gear5[/Keyboard/5]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnGear6Input
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d19147b7-fe06-4806-b6fa-5c7b5d6c97d8
+    m_ActionName: 'Player/Gear6[/Keyboard/6]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1164029233}
+        m_TargetAssemblyTypeName: VehicleInputHandler, Assembly-CSharp
+        m_MethodName: OnReverseInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e33af920-6a59-4cb4-92d5-f1ca42047bff
+    m_ActionName: 'Player/Reverse[/Keyboard/8]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c95b2375-e6d9-4b88-9c4c-c5e76515df4b
+    m_ActionName: 'UI/Navigate[/44F B677/stick/up,/44F B677/stick/down,/44F B677/stick/left,/44F
+      B677/stick/right,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7607c7b6-cd76-4816-beef-bd0341cfe950
+    m_ActionName: 'UI/Submit[/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 15cef263-9014-4fd5-94d9-4e4a6234a6ef
+    m_ActionName: 'UI/Cancel[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 32b35790-4ed0-4e9a-aa41-69ac6d629449
+    m_ActionName: 'UI/Point[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3c7022bf-7922-4f7c-a998-c437916075ad
+    m_ActionName: 'UI/Click[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 44b200b1-1557-4083-816c-b22cbdf77ddf
+    m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dad70c86-b58c-4b17-88ad-f5e53adf419e
+    m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0489e84a-4833-4c40-bfae-cea84b696689
+    m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 24908448-c609-4bc3-a128-ea258674378a
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
+    m_ActionName: UI/TrackedDeviceOrientation
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &1164029233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164029229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d24165fa9f9c3e0409336c69785f5d52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: {fileID: 1164029232}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -535,3 +875,4 @@ SceneRoots:
   - {fileID: 284419524}
   - {fileID: 159375459}
   - {fileID: 1164029231}
+  - {fileID: 798952580}
