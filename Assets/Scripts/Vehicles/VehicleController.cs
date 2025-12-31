@@ -15,7 +15,7 @@ public class VehicleController : MonoBehaviour
     WheelController[] wheels;
     EngineModel engine;
     TransmissionModel transmission;
-    ClutchModel clutch;
+    FrictionClutch clutch;
     Rigidbody rb;
     public float SpeedKPH
     {
@@ -27,17 +27,15 @@ public class VehicleController : MonoBehaviour
     }
 
     int drivenWheelCount;
-    float acceleratorAxis;
-    float clutchAxis;
-    float brakeAxis;
-    float steerAxis;
-
 
     void Awake()
     {
         engine = new EngineModel(carSpec);
         transmission = new TransmissionModel(carSpec);
-        clutch = new ClutchModel(inputHandler, clutchCurve.Curve);
+        clutch = new FrictionClutch(
+            clutchCurve.Curve,
+            800f
+        );
         inputHandler.OnGearPressed += transmission.SetGear;
         wheels = new WheelController[]{
             wheelFR,
@@ -75,15 +73,11 @@ public class VehicleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        acceleratorAxis = inputHandler.AccelerationAxis;
-        clutchAxis = clutch.Engagement;
-        brakeAxis = inputHandler.BrakeAxis;
-        steerAxis = inputHandler.SteerAxis;
-        Debug.Log($"accel{acceleratorAxis}\nclutch{clutchAxis}\nbrake{brakeAxis}\nsteer{steerAxis}");
     }
     void FixedUpdate()
     {
         float dt = Time.fixedDeltaTime;
+        clutch.SetEngagement(inputHandler.ClutchAxis);
         float averageDrivenWheelRpm = GetAverageDrivenWheelRpm();
         UpdateDrivetrain(averageDrivenWheelRpm, dt);
         //ä»à’ìIÇ»ãÛãCíÔçRçƒåª
@@ -107,22 +101,53 @@ public class VehicleController : MonoBehaviour
     }
     void UpdateDrivetrain(float avgDrivenWheelRpm, float deltaTime)
     {
-        engine.UpdateTorque(acceleratorAxis);
-        float returnTorque = transmission.CalculateReturnTorque(
-            engine.CurrentRPM,
-            avgDrivenWheelRpm,
-            clutchAxis
-        );
-        engine.ApplyExternalTorque(returnTorque, deltaTime);
-        float drivenTorque =
-        transmission.CalculateDrivenTorque(
-            engine.OutputTorque,
-            clutchAxis,
-            drivenWheelCount
-        );
+        engine.UpdateTorque(inputHandler.AccelerationAxis);
+        //rad/sÇ…ïœä∑ÇµÅAâÒì]ç∑ÇåvéZ
+        float engineOmega = engine.CurrentRPM * Mathf.PI * 2 / 60f;
+        float transOmega = avgDrivenWheelRpm * Mathf.PI * 2 / 60f * transmission.CurrentRatio;
+        float absRatio = Mathf.Abs(transmission.CurrentRatio);
+        float vehicleInertia = 0.05f;
+        if(absRatio > 0.01f
+            && clutch.Engagement > 0.01f)
+        {
+            float v = rb.mass * (carSpec.WheelRadius * carSpec.WheelRadius);
+            vehicleInertia = v / (absRatio * absRatio); 
+        }
+
+        //loadTorqueÇÃåvéZ
+        float speed = rb.linearVelocity.magnitude;
+        float rollingResistance = 0.015f * rb.mass * 9.81f;
+        float totalResistanceForce = rollingResistance + (0.4f * speed * speed);
+
+        float loadTorque = (totalResistanceForce * carSpec.WheelRadius) / (absRatio == 0 ? 1 : absRatio);
+        float threshold = 0.1f;
+        if(engineOmega < threshold && engineOmega > -threshold)
+        {
+            loadTorque = 0f;
+        }
+        else
+        {
+            loadTorque *= -Mathf.Sign(engineOmega);
+        }
+
+
+        float clutchTorque = transmission.CurrentRatio == 0f ? 0f : 
+            clutch.ComputeTorque(
+                engine.OutputTorque,
+                engineOmega,
+                carSpec.FlywheelInertia,
+                loadTorque,
+                transOmega,
+                vehicleInertia,
+                deltaTime
+            );
+        Debug.Log(clutchTorque);
+        engine.ApplyExternalTorque(-clutchTorque, deltaTime);
+
+        float drivenTorque = clutchTorque * transmission.CurrentRatio / drivenWheelCount;//ãÏìÆó÷ÇÃêîÇ≈äÑÇÈ
         foreach (WheelController wheel in wheels)
         {
-            wheel.ApplyInput(drivenTorque, brakeAxis, steerAxis);
+            wheel.ApplyInput(drivenTorque, inputHandler.BrakeAxis, inputHandler.SteerAxis);
         }
     }
 

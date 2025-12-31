@@ -10,12 +10,12 @@ public class StatusUITemp : MonoBehaviour
     [SerializeField] TMP_Text velocity;
     [SerializeField] RectTransform needleRect;
     MeterController meterController;
-    ClutchModel clutchModel;
+    FrictionClutch clutchModel;
     TransmissionModel transmission;
     EngineModel engine;
     VehicleController vehicleController;
     public void Initialize(
-        ClutchModel clutchModel,
+        FrictionClutch clutchModel,
         TransmissionModel transmission,
         EngineModel engine,
         VehicleController vehicleController,

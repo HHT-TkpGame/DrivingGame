@@ -12,9 +12,12 @@ public class TransmissionModel
         Reverse
     }
     CarSpec spec;
-    float currentGearRatio = 0;
+    float currentGearRatio;
+    /// <summary>
+    /// ƒfƒt”ä‚ÆƒMƒA”ä‚ğæZ‚µ‚½”{—¦
+    /// </summary>
+    public float CurrentRatio { get { return currentGearRatio * finalDriveRatio; }}
     public int CurrentGear {  get; private set; }
-    GearState currentState = GearState.Neutral;
 
     float[] gearRatios;// 1‘¬`5‘¬
     float reverseGearRatios;
@@ -42,57 +45,13 @@ public class TransmissionModel
         {
             case -1:
                 currentGearRatio = reverseGearRatios;
-                currentState = GearState.Reverse;
                 break;
             case 0:
                 currentGearRatio = 0;
-                currentState = GearState.Neutral;
                 break;
             default: 
-                currentGearRatio = gearRatios[newGear-1];
-                currentState = GearState.Forward;
+                currentGearRatio = gearRatios[CurrentGear-1];
                 break;
         }
-    }
-    public float CalculateDrivenTorque(float engineTorque, float clutchEngagement, int drivenWheelCount)
-    {
-        if(currentState == GearState.Neutral || clutchEngagement < 0.01) { return 0f; }
-        float driveTorque = engineTorque * clutchEngagement;
-        float totalRatio = currentGearRatio * finalDriveRatio;
-        float wheelTorque = driveTorque * totalRatio / drivenWheelCount;
-        return wheelTorque;
-    }
-
-    /// <summary>
-    /// ƒGƒ“ƒWƒ“‚ÆƒzƒC[ƒ‹‚Ì‰ñ“]”‚©‚ç–ß‚èƒgƒ‹ƒN‚ğŒvZ‚·‚é
-    /// </summary>
-    /// <param name="engineRPM"></param>
-    /// <param name="wheelRPM"></param>
-    /// <param name="flywheelInertia"></param>
-    /// <returns></returns>
-    public float CalculateReturnTorque(
-        float engineRPM,
-        float wheelRPM,
-        float clutchEngagement
-    ){
-        //Debug.Log($"e:{engineRPM},w:{wheelRPM},c:{clutchEngagement}");
-        //‰ñ“]‚Ì‘¬“x‚ğrad/s‚É•ÏŠ·
-        float engineOmega = engineRPM * Mathf.PI * 2f / 60f; //rad/s
-        float wheelOmega = wheelRPM * Mathf.PI * 2f / 60f;   //rad/s
-
-        if (currentState == GearState.Neutral || clutchEngagement < 0.01)
-        {
-            return 0f;
-        }
-        //ƒMƒA”ä‚©‚ç“`’B‘¤‚Ì‰ñ“]‘¬“x‚ğZo
-        float ratio = currentGearRatio * finalDriveRatio;
-        float omegaDifference = engineOmega - (wheelOmega / ratio);
-
-        //float drivenInertia = 2.5f; 
-        float dampingCoeff = 2f; //’²®’li0.1`5‚­‚ç‚¢j
-        float baseInertia = 0.5f;
-        float drivenInertia = baseInertia * ratio * ratio;
-        float returnTorque = drivenInertia * omegaDifference * dampingCoeff * clutchEngagement;
-        return returnTorque;
     }
 }

@@ -18,7 +18,7 @@ public class EngineModelTest : MonoBehaviour
 
     void TestReturnTorque(float engineRPM, float wheelRPM, float clutch)
     {
-        float torque = model.CalculateReturnTorque(engineRPM, wheelRPM, clutch);
-        Debug.Log($"[Test] Gear={model.CurrentGear}, eRPM={engineRPM:F0}, wRPM={wheelRPM:F0}, clutch={clutch:F2} Å® ReturnTorque={torque:F2}");
+        //float torque = model.CalculateReturnTorque(engineRPM, wheelRPM, clutch);
+        //Debug.Log($"[Test] Gear={model.CurrentGear}, eRPM={engineRPM:F0}, wRPM={wheelRPM:F0}, clutch={clutch:F2} Å® ReturnTorque={torque:F2}");
     }
 }

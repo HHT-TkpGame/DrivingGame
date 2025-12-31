@@ -2,10 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-/// <summary>
-/// エンジン単体クラス（回転数・トルク計算）
-/// 車速やギアには依存せず、Throttle入力と外部トルクから回転数・出力トルクを計算
-/// </summary>
+
 public class EngineModel
 {
     enum EngineState
@@ -75,7 +72,7 @@ public class EngineModel
     /// <summary>
     /// トランスミッションの反力トルクを適用し、回転数を更新する
     /// </summary>
-    /// <param name="externalTorque"></param>
+    /// <param name="externalTorque">抵抗がある場合は-方向の値を期待する</param>
     /// <param name="deltaTime"></param>
     public void ApplyExternalTorque(float externalTorque, float deltaTime)
     {
@@ -86,7 +83,7 @@ public class EngineModel
         }
         engineAngularVelocity = currentRPM * 2f * Mathf.PI / 60f;
         // 出力トルクと外部トルク（反力）を合わせて慣性応答を計算
-        float netTorque = OutputTorque - externalTorque;
+        float netTorque = OutputTorque + externalTorque;
         float viscousLoss = 0.000003f * currentRPM * currentRPM; // 空気抵抗的な損失
         float frictionLoss = 6f * (currentRPM / maxRPM);      // 機械摩擦
         float mechanicalLoss = viscousLoss + frictionLoss;
@@ -99,8 +96,6 @@ public class EngineModel
 
         // 角速度更新
         engineAngularVelocity += angularAcceleration * deltaTime;
-
-        //Debug.Log($"External:{externalTorque},\n RPM:{currentRPM},\n Torque:{OutputTorque},\n MechaLos:{mechanicalLoss},\n NetTorque:{netTorque},\n AngularVelocity:{engineAngularVelocity}");
 
         // RPM更新
         currentRPM = Mathf.Clamp(

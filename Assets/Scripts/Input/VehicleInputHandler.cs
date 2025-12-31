@@ -72,6 +72,7 @@ public class VehicleInputHandler : MonoBehaviour
     /// <returns></returns>
     float ProcessingHandleControllerInput(bool negate, float inputValue, InputDevice device)
     {
+        if(device == null) { return inputValue; }
         if (device.name != "44F B677") { return inputValue; }
         int v = negate? -1 : 1;
         inputValue = (inputValue * v + 1) / 2; 

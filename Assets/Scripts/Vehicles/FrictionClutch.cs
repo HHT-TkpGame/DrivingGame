@@ -2,47 +2,68 @@ using UnityEngine;
 
 public class FrictionClutch
 {
+    public float Engagement {  get; private set; }
+    //クラッチの接続状態(1が接続, 0が切断)
+    //InputHandlerからの入力は押されていない時が0を返す
+    //本来は入力がない時に接続状態が1になるべきなので値を反対にする
+    public void SetEngagement(float clutchInput)
+    {
+        float raw = 1 - clutchInput;
+        Engagement = curve.Evaluate(raw);
+    }
+
     AnimationCurve curve;
-    float maxStaticFriction;//Nm
-    float maxDynamicFriction;//Nm
-    float slipThreshold;//rad/s
+    float maxTorqueCap;//Nm　900ぐらい
+    float maxCap { get { return maxTorqueCap * Engagement; } }
     public FrictionClutch(
         AnimationCurve curve,
-        float maxStaticFriction,
-        float maxDynamicFriction,
-        float slipThreshold
+        float maxTorqueCap
+    ){
+        this.curve = curve;
+        this.maxTorqueCap = maxTorqueCap;
+    }
+
+    /// <summary>
+    /// クラッチを通過するトルクを計算する（エンジンとトランスミッション間で相互作用させる）
+    /// </summary>
+    /// <param name="engineTorque">エンジンが出力したいトルク</param>
+    /// <param name="loadTorque">トランスミッション側からエンジンに戻る負荷トルク　常にengineOmegaの符号と逆になる</param>
+    /// <param name="engineOmega">エンジン角速度</param>
+    /// <param name="transInputOmega">トランスミッション入力軸角速度</param>
+    /// <returns>実際にクラッチを通過するトルク</returns>
+    public float ComputeTorque(
+        float engineTorque,
+        float engineOmega,
+        float engineInertia,
+        float loadTorque, 
+        float transInputOmega,
+        float vehicleInertia,
+        float deltaTime
     )
     {
-        this.curve = curve;
-        this.maxStaticFriction = maxStaticFriction;
-        this.maxDynamicFriction = maxDynamicFriction;
-        this.slipThreshold = slipThreshold;
-    }
-    /// <summary>
-    /// クラッチが発生させるトルク（符号付き）
-    /// engineOmega - wheelOmega は呼び出し側で計算
-    /// </summary>
-    /// <param name="deltaOmega">回転差(rad/s)</param>
-    /// <param name="input">クラッチ入力 0～1</param>
-    /// <returns>伝達トルク[Nm]</returns>
-    public float GetTransmittedTorque(float deltaOmega, float input)
-    {
-        // クラッチ未接触
-        if (input <= 0f) return 0f;
-
-        float k = curve.Evaluate(input);
-
-        float absDiff = Mathf.Abs(deltaOmega);
-        float sign = Mathf.Sign(deltaOmega);
-
-        if (absDiff < slipThreshold)
+        if (Engagement <= 0.01f)
         {
-            // 同調させる方向に最大静摩擦
-            // → 本当に止められるかは呼び出し側の慣性次第
-            return -sign * k * maxStaticFriction;
+            return 0f;
         }
-        float slipTorque = Mathf.Lerp(k * maxDynamicFriction, k * maxStaticFriction, slipThreshold / absDiff);
 
-        return -sign * slipTorque;
+        float threshold = 5f * deltaTime;
+        float omegaDiff = engineOmega - transInputOmega;
+        float requiredTorque = 
+            (engineTorque * vehicleInertia + loadTorque * engineInertia)
+            / (engineInertia + vehicleInertia); 
+
+        //許容トルクを超えたら上限を返す
+        if(Mathf.Abs(requiredTorque) > maxCap)
+        {
+            Debug.Log("トルクオーバー");
+            return Mathf.Sign(requiredTorque) * maxCap;
+        }
+        if(Mathf.Abs(omegaDiff) < threshold)
+        {
+            Debug.Log("許容回転差");
+            return requiredTorque;
+        }
+        Debug.Log("Slip");
+        return Mathf.Sign(omegaDiff) * maxCap;
     }
 }
