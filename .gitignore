@@ -99,3 +99,5 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 Assets/TextMesh Pro/
 *.fbx
+Assets/Models/3D/horn-koppe_spring_2k.exr
+Assets/Models/3D/textures/
