@@ -9,6 +9,7 @@ public class FadeController : MonoBehaviour
     public event Action OnFadeOutEnd;
     bool isFading;
     int fadeDir;
+    float targetAlpha;
     float fadeSpeed = 1f;
     Color newColor;
     const float WAIT_FOR_SEC = 1f;
@@ -16,21 +17,27 @@ public class FadeController : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log($"alpha:{newColor.a}");
         if (!isFading) { return; }
         waitForSec -= Time.deltaTime;
         if(waitForSec > 0) { return; }
-        Debug.Log("Fading");
-        newColor.a += Time.deltaTime * fadeSpeed * fadeDir;
+        newColor.a = Mathf.MoveTowards(
+            newColor.a,
+            targetAlpha,
+            fadeSpeed * Time.deltaTime
+        );
         panel.color = newColor;
-        if (newColor.a >= 1)
+        if (newColor.a == targetAlpha)
         {
             isFading = false;
-            OnFadeOutEnd?.Invoke();
-        }
-        if(newColor.a <= 0)
-        {
-            isFading = false;
-            OnFadeInEnd?.Invoke();
+            if (fadeDir > 0)
+            {
+                OnFadeOutEnd?.Invoke();
+            }
+            else
+            {
+                OnFadeInEnd?.Invoke();
+            }
         }
     }
     public void StartAnimation()
@@ -39,6 +46,7 @@ public class FadeController : MonoBehaviour
         isFading = true;
         fadeDir = panel.color.a < 0.5f ? 1 : -1;
         newColor = panel.color;
+        targetAlpha = fadeDir > 0 ? 1 : 0;
         Debug.Log($"StartAnimation{fadeDir}");
     }
 }
