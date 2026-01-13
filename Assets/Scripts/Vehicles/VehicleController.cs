@@ -43,13 +43,13 @@ public class VehicleController : MonoBehaviour
             wheelRL,
             wheelRR
         };
-        tempUI.Initialize(
-            clutch,
-            transmission,
-            engine,
-            this,
-            carSpec.MaxRPM
-        );
+        //tempUI.Initialize(
+        //    clutch,
+        //    transmission,
+        //    engine,
+        //    this,
+        //    carSpec.MaxRPM
+        //);
         rb = GetComponent<Rigidbody>();
     }
 

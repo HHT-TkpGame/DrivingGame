@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ public class TimeAttackTimer : MonoBehaviour
     [SerializeField] TMP_Text txtTimer;
     float timer;
     bool isActive;
+    public event Action<string> OnTimerStopped;
     void Start()
     {
         txtTimer.text = "";
@@ -17,6 +19,7 @@ public class TimeAttackTimer : MonoBehaviour
     public void StopTimer()
     {
         isActive = false;
+        OnTimerStopped?.Invoke(ToMinuteSecondFrame(timer));
     }
 
     void Update()

@@ -15,10 +15,12 @@ public class TimeAttackController : MonoBehaviour, IInGameController
     [SerializeField] Countdown countdown;
     public void Initialize()
     {
+        tracker = new LapTracker();
         fade.OnFadeInEnd += countdown.StartCountdown;
         countdown.OnCountdownEnd += EndInitialize;
-        tracker = new LapTracker();
         tracker.OnGoal += EndGame;
+        uIController.OnExitRequested += EndResult;
+        fade.OnFadeOutEnd += EndTransition;
         generator.Initialize(tracker);
         tracker.Initialize(generator.Generate());
         fade.StartAnimation();
@@ -30,20 +32,28 @@ public class TimeAttackController : MonoBehaviour, IInGameController
     void EndGame()
     {
         OnGameEnd?.Invoke();
-        uIController.StopUI();
+        uIController.StopInGameUI();
+    }
+    void EndResult()
+    {
+        OnResultEnd?.Invoke();
+    }
+    void EndTransition()
+    {
+        OnTransitionEnd?.Invoke();
     }
     public void StartGame()
     {
         uIController.Initialize(tracker);
-        uIController.StartUI();
+        uIController.StartInGameUI();
     }
     public void StartResult()
     {
-
+        uIController.StartResultUI();
     }
     public void StartTransition()
     {
-
+        fade.StartAnimation();
     }
     public void OpenMenu()
     {

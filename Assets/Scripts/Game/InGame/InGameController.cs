@@ -54,6 +54,7 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
         iGameController.OnGameEnd += SetResultState;
         iGameController.OnResultEnd += SetTransitionState;
         iGameController.OnMenuClosed += SetPlayState;
+        iGameController.OnTransitionEnd += NextSceneRequest;
     }
     void SetPlayState()
     {
