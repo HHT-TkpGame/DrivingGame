@@ -412,8 +412,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 632a154b5f3998744bc75aae42305714, type: 2}
+  m_sharedMaterial: {fileID: -3974337090612036059, guid: 632a154b5f3998744bc75aae42305714, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -843,6 +843,14 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 034b40e6-ae3f-4eb1-a7cb-dd17ff850bca
     m_ActionName: 'UI/Next[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0e6cd7b8-2971-4315-b639-a705dfa808f8
+    m_ActionName: 'Player/SwitchView[/Keyboard/v]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9c517538-145c-4f33-9dae-2aa5034a3f2f
+    m_ActionName: 'Player/BehindView[/Keyboard/c]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
@@ -2037,8 +2045,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: FreeDrive
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 632a154b5f3998744bc75aae42305714, type: 2}
+  m_sharedMaterial: {fileID: -3974337090612036059, guid: 632a154b5f3998744bc75aae42305714, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2373,8 +2381,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 632a154b5f3998744bc75aae42305714, type: 2}
+  m_sharedMaterial: {fileID: -3974337090612036059, guid: 632a154b5f3998744bc75aae42305714, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2630,8 +2638,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Lexus LFA
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 632a154b5f3998744bc75aae42305714, type: 2}
+  m_sharedMaterial: {fileID: -3974337090612036059, guid: 632a154b5f3998744bc75aae42305714, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2766,8 +2774,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Customize
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 632a154b5f3998744bc75aae42305714, type: 2}
+  m_sharedMaterial: {fileID: -3974337090612036059, guid: 632a154b5f3998744bc75aae42305714, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

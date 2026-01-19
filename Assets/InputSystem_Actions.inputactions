@@ -122,6 +122,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SwitchView",
+                    "type": "Button",
+                    "id": "0e6cd7b8-2971-4315-b639-a705dfa808f8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BehindView",
+                    "type": "Button",
+                    "id": "9c517538-145c-4f33-9dae-2aa5034a3f2f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -375,6 +393,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Clutch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3bf4e450-fdb6-4928-8f3e-31eace90536e",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchView",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4eb79b7d-e97f-48ab-9b3c-be0e814d8b8b",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BehindView",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
