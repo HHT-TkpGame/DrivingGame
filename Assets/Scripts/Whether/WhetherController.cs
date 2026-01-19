@@ -1,0 +1,133 @@
+using System;
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.VFX;
+
+public class WhetherController : MonoBehaviour
+{
+    const int SUNNY = 0;
+    const int RAINY = 1;
+
+	[Header("晴天時のVolume"), SerializeField] VolumeProfile sunnyVolume;
+	[Header("雨天時のVolume"), SerializeField] VolumeProfile rainyVolume;
+
+	[Header("晴天時のグラウンドのマテリアル"), SerializeField] Material sunnyGroundMat;
+	[Header("雨天時のグラウンドのマテリアル"), SerializeField] Material rainyGroundMat;
+
+	[Header("晴天時のフロントガラスのマテリアル"), SerializeField] Material sunnyGlassMat;
+	[Header("雨天時のフロントガラスのマテリアル"), SerializeField] Material rainyGlassMat;
+
+	[Header("晴天時の道路のマテリアル"), SerializeField] Material sunnyCourseMat;
+	[Header("雨天時の道路のマテリアル"), SerializeField] Material rainyCourseMat;
+
+	[Header("雨エフェクト"), SerializeField] VisualEffect rainEffect;
+
+	[Header("水たまりがある場所のコライダー"), SerializeField] BoxCollider[] puddleColliders;
+	[Header("砂地がある場所のコライダー"), SerializeField] MeshCollider[] sandColliders;
+
+	[SerializeField] Volume weatherVol;
+
+	[SerializeField] MeshRenderer groundMat;
+	[SerializeField] MeshRenderer glassMat;
+	[SerializeField] MeshRenderer courseMat;
+	[SerializeField] MeshRenderer slopeMat;
+	[SerializeField] WheelEffectController wheelEffectController;
+
+
+
+	/// <summary>
+	/// ゲーム内における天候の差
+	/// 
+	/// 路面,グラウンド
+	/// ・晴天時
+	/// 　　晴天時のマテリアルを設定
+	/// ・雨天時
+	///     雨天時のマテリアルを設定
+	/// エフェクト
+	/// ・晴天時
+	///     ダートは行った時に土煙を再生
+	///     雨粒エフェクトを停止
+	/// ・雨天時
+	///     どこを走ってても小さい水しぶき
+	///     水たまりに入ったときに水しぶき
+	///     雨粒エフェクトを再生
+	///     
+	/// 車体について
+	/// ・晴天時
+	///		フロントガラスのマテリアルのSizeとTimeの値を0にする
+	///	・雨天時
+	///		フロントガラスのマテリアルのSizeとTimeの値を3.7と7.1にする
+	///		
+	/// エフェクトについてゲームが始まったときに天候に合わせて土埃と水しぶきのどちらを再生するか
+	/// </summary>
+
+	///車から出るエフェクト系どうやって設計するか
+
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	void Start()
+    {
+        Init();
+    }
+
+	public enum WhetherState
+	{
+		Sunny,
+		Rainy
+	}
+
+	public WhetherState CurrentState {  get; private set; }
+
+
+
+    public void Init()
+    {
+		int length = Enum.GetValues(typeof(WhetherState)).Length;
+        int whether = UnityEngine.Random.Range(0, length);
+		CurrentState = (WhetherState)whether;
+		
+		wheelEffectController.Init(this);
+
+        switch (CurrentState)
+        {
+            case WhetherState.Sunny:
+
+
+				weatherVol.profile = sunnyVolume;
+				groundMat.material = sunnyGroundMat;
+				glassMat.material = sunnyGlassMat;
+				courseMat.material = sunnyCourseMat;
+				slopeMat.material = sunnyCourseMat;
+
+
+				rainEffect.Stop();
+				Debug.Log("晴れた");
+				//CollidersState(false);
+				break;
+            case WhetherState.Rainy:
+
+				weatherVol.profile = rainyVolume;
+				groundMat.material = rainyGroundMat;
+				glassMat.material = rainyGlassMat;
+				courseMat.material = rainyCourseMat;
+				slopeMat.material = rainyCourseMat;
+
+				rainEffect.Play();
+				Debug.Log("雨");
+				//CollidersState(true);
+				break;
+        }
+    }
+
+
+	void CollidersState(bool state)
+	{
+		for (int i = 0; i < puddleColliders.Length; i++)
+		{
+			puddleColliders[i].enabled = state;
+		}
+		for (int i = 0; i < sandColliders.Length; i++)
+		{
+			sandColliders[i].enabled = !state;
+		}
+	}
+}
