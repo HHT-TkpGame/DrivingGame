@@ -10,15 +10,16 @@ public class StatusUITemp : MonoBehaviour
     [SerializeField] TMP_Text velocity;
     [SerializeField] RectTransform needleRect;
     MeterController meterController;
-    FrictionClutch clutchModel;
-    TransmissionModel transmission;
-    EngineModel engine;
-    VehicleController vehicleController;
+    //FrictionClutch clutchModel;
+    TmpClutchModel clutchModel;
+    TmpTransmissionModel transmission;
+    TmpEngineModel engine;
+    TmpVehicleController vehicleController;
     public void Initialize(
-        FrictionClutch clutchModel,
-        TransmissionModel transmission,
-        EngineModel engine,
-        VehicleController vehicleController,
+        TmpClutchModel clutchModel,
+        TmpTransmissionModel transmission,
+        TmpEngineModel engine,
+        TmpVehicleController vehicleController,
         float maxRpm
     ){
         this.clutchModel = clutchModel;
@@ -40,10 +41,7 @@ public class StatusUITemp : MonoBehaviour
 
     void UpdateUI()
     {
-        rpm.text = $"Rpm : {engine.CurrentRPM}";
         gear.text = $"Gear\n{gears[transmission.CurrentGear+1]}";
-        torque.text = $"Torque : {engine.OutputTorque.ToString("f1")}";
-        clutch.text = $"Engagement : {clutchModel.Engagement}";
         meterController.UpdateNeedle(engine.CurrentRPM);
         velocity.text = vehicleController.SpeedKPH.ToString("f1");
     }
