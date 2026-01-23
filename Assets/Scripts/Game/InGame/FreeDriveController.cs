@@ -8,7 +8,8 @@ public class FreeDriveController : MonoBehaviour, IInGameController
     public event Action OnResultEnd;
     public event Action OnMenuClosed;
     public event Action OnTransitionEnd;
-    public void Initialize()
+    [SerializeField] VehicleInputHandler vehicleInputHandler;
+    public void Initialize(VehicleInputHandler handler)
     {
         
     }

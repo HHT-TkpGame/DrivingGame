@@ -13,8 +13,13 @@ public class TimeAttackController : MonoBehaviour, IInGameController
     public event Action OnTransitionEnd;
     [SerializeField] FadeController fade;
     [SerializeField] Countdown countdown;
-    public void Initialize()
+
+    [SerializeField] MenuUIController menuUIController;
+    VehicleInputHandler handler;
+
+    public void Initialize(VehicleInputHandler handler)
     {
+        this.handler = handler; 
         tracker = new LapTracker();
         fade.OnFadeInEnd += countdown.StartCountdown;
         countdown.OnCountdownEnd += EndInitialize;
@@ -24,6 +29,11 @@ public class TimeAttackController : MonoBehaviour, IInGameController
         generator.Initialize(tracker);
         tracker.Initialize(generator.Generate());
         fade.StartAnimation();
+        menuUIController.Initialize();
+        menuUIController.OnMenuClosed += MenuClosed;
+
+        this.handler.InMenuClick += InMenuClick;
+        this.handler.MenuArrows += MenuScroll;
     }
     void EndInitialize()
     {
@@ -57,6 +67,19 @@ public class TimeAttackController : MonoBehaviour, IInGameController
     }
     public void OpenMenu()
     {
-
+        menuUIController.OpenMenu();
+    }
+    void InMenuClick()
+    {
+        menuUIController.ClickAnyUI();
+    }
+    void MenuScroll(float value)
+    {
+        //Debug.Log(value);
+        menuUIController.MenuArrow(value);
+	}
+    void MenuClosed()
+    {
+        OnMenuClosed?.Invoke();
     }
 }

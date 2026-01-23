@@ -7,6 +7,7 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
     //GameModeContextからGameModeを受け取ってインゲームの初期化をする
     [SerializeField] GameModeContext modeContext;
     [SerializeField] TimeAttackController timeAttackController;
+    [SerializeField] VehicleInputHandler vehicleInputHandler;
     IInGameController iGameController;
     InGameSceneState currentState = InGameSceneState.Initializing;
     void Start()
@@ -26,7 +27,7 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
                 break;
             case InGameSceneState.Menu:
                 iGameController.OpenMenu();
-                break;
+				break;
             case InGameSceneState.Result:
                 iGameController.StartResult();
                 break;
@@ -45,7 +46,7 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
             case GameModeState.FreeDrive:
                 break;
         }
-        iGameController.Initialize();
+        iGameController.Initialize(vehicleInputHandler);
         SetSubscribers();
     }
     void SetSubscribers()
@@ -55,6 +56,8 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
         iGameController.OnResultEnd += SetTransitionState;
         iGameController.OnMenuClosed += SetPlayState;
         iGameController.OnTransitionEnd += NextSceneRequest;
+        vehicleInputHandler.OnMenuButtonPressed += SetMenuState;
+        //vehicleInputHandler.InMenuClick += MenuUIClick;
     }
     void SetPlayState()
     {
@@ -76,4 +79,21 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
     {
         OnNextRequested?.Invoke(GameState.Title);
     }
+
+    //timeAttackControllerにHandlerを直接渡すパターンだとStateを見れないと思った
+    //Stateを見れないとMenuを開いてないのにブラインド状態でゲームを終わらせたりできそう
+    
+    //なのでHandlerを直接渡すパターンだとOpenMenuしたときにMenuUIControllerでBoolの値を持っておいて
+    //MenuUIClickでその値を見て動かしてもいいか判断
+    
+    //もしくはIInGameControllerでClickのメソッドとかActionを追加してInGameControllerの中でStateを見てMenuなら
+    //IInGameController.なんとかでTimeAttackControllerやFreeMoveに渡す
+    
+    //一旦上の方法で動かす
+    //void MenuUIClick()
+    //{
+    //    if (currentState != InGameSceneState.Menu) { return; }
+
+
+    //}
 }
