@@ -17,6 +17,8 @@ public class VehicleController : MonoBehaviour
     TransmissionModel transmission;
     FrictionClutch clutch;
     Rigidbody rb;
+    float vehicleInertiaSmoothed = 0.05f;
+
     public float SpeedKPH
     {
         get
@@ -43,13 +45,13 @@ public class VehicleController : MonoBehaviour
             wheelRL,
             wheelRR
         };
-        //tempUI.Initialize(
-        //    clutch,
-        //    transmission,
-        //    engine,
-        //    this,
-        //    carSpec.MaxRPM
-        //);
+        tempUI.Initialize(
+            clutch,
+            transmission,
+            engine,
+            this,
+            carSpec.MaxRPM
+        );
         rb = GetComponent<Rigidbody>();
     }
 
@@ -107,31 +109,38 @@ public class VehicleController : MonoBehaviour
         float transOmega = avgDrivenWheelRpm * Mathf.PI * 2 / 60f * transmission.CurrentRatio;
         float absRatio = Mathf.Abs(transmission.CurrentRatio);
         float vehicleInertia = 0.05f;
-        if(absRatio > 0.01f
+        float smoothRate = 10f; // 追従速度[1/s]
+        vehicleInertiaSmoothed = Mathf.Lerp(vehicleInertiaSmoothed, vehicleInertia, 1f - Mathf.Exp(-smoothRate * deltaTime));
+        vehicleInertia = vehicleInertiaSmoothed;
+        if (absRatio > 0.01f
             && clutch.Engagement > 0.01f)
         {
-            float v = rb.mass * (carSpec.WheelRadius * carSpec.WheelRadius);
-            vehicleInertia = v / (absRatio * absRatio); 
+            float v = (rb.mass * (carSpec.WheelRadius * carSpec.WheelRadius))/drivenWheelCount;
+            vehicleInertia = v / (absRatio * absRatio);
         }
 
         //loadTorqueの計算
         float speed = rb.linearVelocity.magnitude;
         float rollingResistance = 0.015f * rb.mass * 9.81f;
-        float totalResistanceForce = rollingResistance + (0.4f * speed * speed);
 
-        float loadTorque = (totalResistanceForce * carSpec.WheelRadius) / (absRatio == 0 ? 1 : absRatio);
+        float loadTorque = (rollingResistance * carSpec.WheelRadius) / (absRatio == 0 ? 1 : absRatio);
+        // 車輪側(=transOmega)も参照しつつ、0近傍はスムーズに0へフェードさせる
         float threshold = 0.1f;
-        if(engineOmega < threshold && engineOmega > -threshold)
+
+        float signOmega = Mathf.Abs(transOmega) > threshold ? transOmega : engineOmega;
+
+        // 0近傍で線形に減衰させる
+        float fade = Mathf.InverseLerp(0f, threshold, Mathf.Abs(signOmega));
+        if (fade <= 0.0001f)
         {
             loadTorque = 0f;
         }
         else
         {
-            loadTorque *= -Mathf.Sign(engineOmega);
+            loadTorque *= -Mathf.Sign(signOmega) * fade;
         }
 
-
-        float clutchTorque = transmission.CurrentRatio == 0f ? 0f : 
+        float clutchTorque = transmission.CurrentRatio == 0f ? 0f :
             clutch.ComputeTorque(
                 engine.OutputTorque,
                 engineOmega,
@@ -141,7 +150,7 @@ public class VehicleController : MonoBehaviour
                 vehicleInertia,
                 deltaTime
             );
-        Debug.Log(clutchTorque);
+        //Debug.Log(clutchTorque);
         engine.ApplyExternalTorque(-clutchTorque, deltaTime);
 
         float drivenTorque = clutchTorque * transmission.CurrentRatio / drivenWheelCount;//駆動輪の数で割る
