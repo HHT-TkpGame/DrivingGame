@@ -48,7 +48,7 @@
         public void ApplyInput(float torque, float brakeTorque, float steer)
         {
             // RPMに応じて単調に増える回転抵抗
-            wheel.wheelDampingRate = Mathf.Lerp(0.05f, 0.3f, Mathf.InverseLerp(0f, 1000f, Mathf.Abs(wheel.rpm)));
+            wheel.wheelDampingRate = Mathf.Lerp(0.005f, 0.02f, Mathf.InverseLerp(0f, 2500f, Mathf.Abs(wheel.rpm)));
             // 駆動トルク制御
             wheel.motorTorque = isDrivenWheel ? torque : 0f;
             // ステアリング制御

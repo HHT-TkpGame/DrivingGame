@@ -103,7 +103,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   pumpingLossFactor: 0.12
-  finalDriveRatio: 4.2
+  finalDriveRatio: 5
   gearRatios:
   - 3.231
   - 2.188

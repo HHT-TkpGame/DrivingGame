@@ -24,6 +24,8 @@ public class EngineModel
 
     [Header("状態")]
     float currentRPM = 1000f;       // 現在の回転数
+    float engineBrakeTorqueCap = 120f;
+
 
     /// <summary>
     /// 現在のエンジントルク
@@ -50,23 +52,35 @@ public class EngineModel
     /// <summary>
     /// 外部トルクを考慮しない純トルク計算
     /// </summary>
-    /// <param name="throttle"></param>
-    public void UpdateTorque(float throttle)
+    /// <param name="inputThrottle"></param>
+    public void UpdateTorque(float inputThrottle)
     {
         if (currentState == EngineState.Stalled)
         {
             OutputTorque = 0f;
             return;
         }
-        throttle += UpdateIdleControl(throttle);
+        //1以上にはならないはずだが1を超えると計算が壊れるのでクランプする
+        inputThrottle = Mathf.Clamp01(inputThrottle);
+        float idleThrottle = UpdateIdleControl(inputThrottle);
+        float throttle = Mathf.Clamp01(inputThrottle + idleThrottle);
+
         // スロットルに応じた理論トルク
         float baseTorque = torqueCurve.Evaluate(currentRPM) * throttle;
         
         // 損失分を差し引く
         float lossTorque = baseTorque * pumpingLossFactor;
 
+        float rpmPer = Mathf.Clamp01(currentRPM / maxRPM);
+
+        float idleFade = Mathf.Clamp01((currentRPM - idleRPM) / Mathf.Max(1f, idleRPM * 0.5f));
+
+        float rpmFactor = Mathf.Pow(rpmPer, 3);
+
+        float engineBrakeTorque = (1f - inputThrottle) * engineBrakeTorqueCap * rpmFactor * idleFade;
+
         // エンジンの純出力トルク
-        OutputTorque = baseTorque - lossTorque;
+        OutputTorque = baseTorque - lossTorque - engineBrakeTorque;
     }
 
     /// <summary>

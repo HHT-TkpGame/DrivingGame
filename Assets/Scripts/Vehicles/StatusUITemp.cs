@@ -43,6 +43,6 @@ public class StatusUITemp : MonoBehaviour
     {
         gear.text = $"Gear\n{gears[transmission.CurrentGear+1]}";
         meterController.UpdateNeedle(engine.CurrentRPM);
-        velocity.text = vehicleController.SpeedKPH.ToString("f1");
+        velocity.text = vehicleController.SpeedKPH.ToString("f0");
     }
 }

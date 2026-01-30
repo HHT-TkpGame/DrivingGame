@@ -36,7 +36,7 @@ public class VehicleController : MonoBehaviour
         transmission = new TransmissionModel(carSpec);
         clutch = new FrictionClutch(
             clutchCurve.Curve,
-            800f
+            1000f
         );
         inputHandler.OnGearPressed += transmission.SetGear;
         wheels = new WheelController[]{
@@ -109,15 +109,19 @@ public class VehicleController : MonoBehaviour
         float transOmega = avgDrivenWheelRpm * Mathf.PI * 2 / 60f * transmission.CurrentRatio;
         float absRatio = Mathf.Abs(transmission.CurrentRatio);
         float vehicleInertia = 0.05f;
-        float smoothRate = 10f; // ’Ç]‘¬“x[1/s]
-        vehicleInertiaSmoothed = Mathf.Lerp(vehicleInertiaSmoothed, vehicleInertia, 1f - Mathf.Exp(-smoothRate * deltaTime));
-        vehicleInertia = vehicleInertiaSmoothed;
-        if (absRatio > 0.01f
-            && clutch.Engagement > 0.01f)
+
+        if (absRatio > 0.01f && clutch.Engagement > 0.01f)
         {
-            float v = (rb.mass * (carSpec.WheelRadius * carSpec.WheelRadius))/drivenWheelCount;
+            float v = rb.mass * (carSpec.WheelRadius * carSpec.WheelRadius) / drivenWheelCount;
             vehicleInertia = v / (absRatio * absRatio);
         }
+        float smoothRate = 10f;
+        vehicleInertiaSmoothed = Mathf.Lerp(
+            vehicleInertiaSmoothed,
+            vehicleInertia,
+            1f - Mathf.Exp(-smoothRate * deltaTime)
+        );
+        vehicleInertia = vehicleInertiaSmoothed;
 
         //loadTorque‚ÌŒvŽZ
         float speed = rb.linearVelocity.magnitude;

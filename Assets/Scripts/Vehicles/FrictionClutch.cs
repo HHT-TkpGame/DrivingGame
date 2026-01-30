@@ -65,23 +65,20 @@ public class FrictionClutch
         // ここでは「回転差を減らす向きの連続トルク」を作り、
         // 最大伝達トルク(maxCap)でクランプすることで安定化させる。
         float omegaDiff = engineOmega - transInputOmega;
-        // 安全策：慣性が異常値の場合の保護
         float inertiaSum = engineInertia + vehicleInertia;
-        Debug.Log("sum:"+inertiaSum);
 
         //エンジン側/負荷側の釣り合いから必要な伝達トルクを推定
         float requiredTorque =
-            (engineTorque * vehicleInertia + loadTorque * engineInertia)
-            / inertiaSum;
+            (engineTorque * vehicleInertia + loadTorque * engineInertia) / inertiaSum;
 
-        // 回転差を吸収する
-        // 2つの慣性がクラッチで結合しているとみなし、等価慣性で回転差を減らす方向のトルクを計算する。
-        // 「1フレームでomegaDiffを打ち消す」量を基準にしているので、deltaTimeでスケールする。
+        //回転差を吸収する
+        //2つの慣性がクラッチで結合しているとみなし、等価慣性で回転差を減らす方向のトルクを計算する。
+        //1フレームでomegaDiffを打ち消す量を基準にしているので、deltaTimeでスケールする。
         float effectiveInertia = (engineInertia * vehicleInertia) / inertiaSum;
         float viscousGain = effectiveInertia * slipResponse; // Nm / (rad/s) 相当（目安）
         float slipTorque = omegaDiff * viscousGain;
 
-        // 目的の伝達トルク（連続）
+        //目的の伝達トルク
         float desiredTorque = requiredTorque + slipTorque;
         return Mathf.Clamp(desiredTorque, -maxCap, maxCap);
     }
