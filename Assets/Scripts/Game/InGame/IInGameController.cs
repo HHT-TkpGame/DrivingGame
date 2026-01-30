@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IInGameController
 {
-    void Initialize();
+    void Initialize(VehicleInputHandler handler);
     void StartGame();
     void OpenMenu();
     void StartResult();
@@ -12,5 +12,6 @@ public interface IInGameController
     event Action OnGameEnd;
     event Action OnResultEnd;
     event Action OnMenuClosed;
+    event Action OnMenuDriveEnd;
     event Action OnTransitionEnd;
 }

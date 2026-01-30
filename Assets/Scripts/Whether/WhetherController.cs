@@ -85,7 +85,7 @@ public class WhetherController : MonoBehaviour
         int whether = UnityEngine.Random.Range(0, length);
 		CurrentState = (WhetherState)whether;
 		
-		wheelEffectController.Init(this);
+		//wheelEffectController.Init(this);
 
         switch (CurrentState)
         {

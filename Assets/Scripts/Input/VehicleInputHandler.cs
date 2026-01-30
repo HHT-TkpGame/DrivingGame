@@ -18,6 +18,33 @@ public class VehicleInputHandler : MonoBehaviour
     float keyboardClutchAxis;
     public event Action<int> OnGearPressed;
 
+    public event Action OnMenuButtonPressed;
+    public event Action InMenuClick;
+    public event Action<float> MenuArrows;
+    public void MenuButtonPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnMenuButtonPressed?.Invoke();
+        }
+    }
+    public void InMenuUIClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            InMenuClick?.Invoke();    
+        }
+    } 
+
+    public void MenuArrowPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            MenuArrows?.Invoke(context.ReadValue<float>());
+			
+		}
+    }
+
     private void Awake()
     {
         clutchAct = input.actions["Clutch"];

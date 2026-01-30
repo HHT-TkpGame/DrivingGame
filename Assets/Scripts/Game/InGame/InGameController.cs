@@ -7,6 +7,7 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
     //GameModeContextÇ©ÇÁGameModeÇéÛÇØéÊÇ¡ÇƒÉCÉìÉQÅ[ÉÄÇÃèâä˙âªÇÇ∑ÇÈ
     [SerializeField] GameModeContext modeContext;
     [SerializeField] TimeAttackController timeAttackController;
+    [SerializeField] VehicleInputHandler vehicleInputHandler;
     IInGameController iGameController;
     InGameSceneState currentState = InGameSceneState.Initializing;
     void Start()
@@ -26,7 +27,7 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
                 break;
             case InGameSceneState.Menu:
                 iGameController.OpenMenu();
-                break;
+				break;
             case InGameSceneState.Result:
                 iGameController.StartResult();
                 break;
@@ -45,7 +46,7 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
             case GameModeState.FreeDrive:
                 break;
         }
-        iGameController.Initialize();
+        iGameController.Initialize(vehicleInputHandler);
         SetSubscribers();
     }
     void SetSubscribers()
@@ -54,7 +55,10 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
         iGameController.OnGameEnd += SetResultState;
         iGameController.OnResultEnd += SetTransitionState;
         iGameController.OnMenuClosed += SetPlayState;
+        iGameController.OnMenuDriveEnd += NextSceneRequest;
         iGameController.OnTransitionEnd += NextSceneRequest;
+        vehicleInputHandler.OnMenuButtonPressed += SetMenuState;
+        //vehicleInputHandler.InMenuClick += MenuUIClick;
     }
     void SetPlayState()
     {
