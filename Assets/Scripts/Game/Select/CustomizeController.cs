@@ -11,13 +11,11 @@ public class CustomizeController : MonoBehaviour
     {
         enable = true;
     }
-    public void EndCustomize(InputAction.CallbackContext context)
+    public void EndCustomize()
     {
         if (!enable) { return; }
-        if (context.performed)
-        {
             OnCustomEnd?.Invoke();
-            enable = false;
-        }
+		enable = false;
+        
     }
 }

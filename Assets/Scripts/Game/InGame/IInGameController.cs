@@ -12,5 +12,6 @@ public interface IInGameController
     event Action OnGameEnd;
     event Action OnResultEnd;
     event Action OnMenuClosed;
+    event Action OnMenuDriveEnd;
     event Action OnTransitionEnd;
 }

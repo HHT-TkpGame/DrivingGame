@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.ShaderGraph;
-using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,28 +16,58 @@ public class MenuUIController : MonoBehaviour
 	int maxMenu;
 	bool isVisible=false;
 
+	[SerializeField] Sprite[] infoTexts;
 	[SerializeField] RectTransform[] settingUIs;
-	[SerializeField] GameObject[] settingUIContents;
+	[SerializeField] MenuVisual[] settingUIContents;
 	[SerializeField] RectTransform cursorUI;
+	[SerializeField] GameObject[] menuContents;
+	[SerializeField] Sprite[] menuPanelSprites;
+	[SerializeField] Sprite[] selectUISprites;
+ 
+
 	Dictionary<MenuItem, Action> menuActions;
+
+	//menuImageの操作説明が書いてある部分の画像のこと
+	//関係があるのはControlsの時のみ
+	//それ以外の時は半透明の画像になると思う
+	[SerializeField] Image menuImage;
+	[SerializeField] Image InfoText;
+
+	Image image;
+	Image cursorImage;
+
+	public event Action OnMenuClosed;
+	public event Action OnEndDrive;
 
 	private void Awake()
 	{
 		menuActions = new Dictionary<MenuItem, Action>()
 		{
-			{ MenuItem.Controls, () => Debug.Log("コントロールでクリックされた")},
-			{ MenuItem.Exit, () => Debug.Log("ゲーム終了")},
-			//{ MenuItem.Back, () => Debug.Log("バックでクリック")},
+			{ MenuItem.Controls, () => SetControlsImage()},
+			{ MenuItem.Exit, () => ClickEndDrive()},
 			{ MenuItem.Back, () => ClosedMenu()}
 		};
+	}
+
+	void ClickEndDrive()
+	{
+		OnEndDrive?.Invoke();
 	}
 
 	public void Initialize()
 	{
 		currentMenu = MenuItem.Controls;
 		maxMenu = Enum.GetValues(typeof(MenuItem)).Length;
+
+		image = GetComponent<Image>();
+		cursorImage = cursorUI.gameObject.GetComponent<Image>();
+
+		UpdateMenuContent(currentMenu);
 		UpdateCursor(currentMenu);
 		UpdateUIContent(currentMenu);
+		UpdateInfoText(currentMenu);
+		UpdateMenuPanelIllst(currentMenu);
+		UpdateSettingSelectUIIllst(currentMenu);
 
 		gameObject.SetActive(false);
 		//今いる場所の記録や設定など
@@ -98,8 +125,12 @@ public class MenuUIController : MonoBehaviour
 
 		currentMenu = (MenuItem)nextMenu;
 
+		UpdateMenuContent(currentMenu);
 		UpdateCursor(currentMenu);
 		UpdateUIContent(currentMenu);
+		UpdateInfoText(currentMenu);
+		UpdateMenuPanelIllst(currentMenu);
+		UpdateSettingSelectUIIllst(currentMenu);
 	}
 
 	public void ClickAnyUI()
@@ -115,13 +146,37 @@ public class MenuUIController : MonoBehaviour
 	}
 	void UpdateUIContent(MenuItem m)
 	{
-		for (int i = 0; i < settingUIContents.Length; i++)
+		MenuVisual visual = settingUIContents[(int)m];
+		menuImage.sprite = visual.mainSprite;
+	}
+	void UpdateInfoText(MenuItem m)
+	{
+		InfoText.sprite = infoTexts[(int)m];
+	}
+	void UpdateMenuContent(MenuItem m)
+	{
+		for(int i = 0; i < menuContents.Length; i++)
 		{
-			settingUIContents[i].SetActive(i == (int)m);
+			menuContents[i].SetActive(i==(int)m);
 		}
 	}
+    void UpdateMenuPanelIllst(MenuItem m)
+	{
+		image.sprite = menuPanelSprites[(int)m];
+	}
+	void UpdateSettingSelectUIIllst(MenuItem m)
+	{
+		cursorImage.sprite = selectUISprites[(int)m];
+	} 
 
-	public event Action OnMenuClosed;
+	bool controlsActive;
+	void SetControlsImage()
+	{
+		controlsActive = !controlsActive;
+		MenuVisual v = settingUIContents[(int)MenuItem.Controls];
+		menuImage.sprite = controlsActive ? v.mainSprite : v.subSprite;
+	}	
+
 
 	//戻るボタンが押されたときも呼ぶ
 	void MenuEnd()

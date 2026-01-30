@@ -55,6 +55,7 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
         iGameController.OnGameEnd += SetResultState;
         iGameController.OnResultEnd += SetTransitionState;
         iGameController.OnMenuClosed += SetPlayState;
+        iGameController.OnMenuDriveEnd += NextSceneRequest;
         iGameController.OnTransitionEnd += NextSceneRequest;
         vehicleInputHandler.OnMenuButtonPressed += SetMenuState;
         //vehicleInputHandler.InMenuClick += MenuUIClick;
@@ -79,21 +80,4 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
     {
         OnNextRequested?.Invoke(GameState.Title);
     }
-
-    //timeAttackControllerにHandlerを直接渡すパターンだとStateを見れないと思った
-    //Stateを見れないとMenuを開いてないのにブラインド状態でゲームを終わらせたりできそう
-    
-    //なのでHandlerを直接渡すパターンだとOpenMenuしたときにMenuUIControllerでBoolの値を持っておいて
-    //MenuUIClickでその値を見て動かしてもいいか判断
-    
-    //もしくはIInGameControllerでClickのメソッドとかActionを追加してInGameControllerの中でStateを見てMenuなら
-    //IInGameController.なんとかでTimeAttackControllerやFreeMoveに渡す
-    
-    //一旦上の方法で動かす
-    //void MenuUIClick()
-    //{
-    //    if (currentState != InGameSceneState.Menu) { return; }
-
-
-    //}
 }

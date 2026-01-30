@@ -10,6 +10,7 @@ public class TimeAttackController : MonoBehaviour, IInGameController
     public event Action OnGameEnd;
     public event Action OnResultEnd;
     public event Action OnMenuClosed;
+    public event Action OnMenuDriveEnd;
     public event Action OnTransitionEnd;
     [SerializeField] FadeController fade;
     [SerializeField] Countdown countdown;
@@ -31,9 +32,15 @@ public class TimeAttackController : MonoBehaviour, IInGameController
         fade.StartAnimation();
         menuUIController.Initialize();
         menuUIController.OnMenuClosed += MenuClosed;
+        menuUIController.OnEndDrive += MenuDriveEnd;
 
         this.handler.InMenuClick += InMenuClick;
         this.handler.MenuArrows += MenuScroll;
+    }
+
+    void MenuDriveEnd()
+    {
+        OnMenuDriveEnd?.Invoke();
     }
     void EndInitialize()
     {
