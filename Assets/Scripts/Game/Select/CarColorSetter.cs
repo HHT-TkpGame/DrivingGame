@@ -11,7 +11,7 @@ public class CarColorSetter : MonoBehaviour
 
 	[SerializeField] Material bodyMaterial;
 
-	//[SerializeField] SaveCarRGB carRGB;
+	[SerializeField] SaveCarRGB carRGB;
 
 	//最初のオレンジ
 	Color defaultColor = new Color(0.766f, 0.445f,0,1);
@@ -101,7 +101,7 @@ public class CarColorSetter : MonoBehaviour
 	//スペース押されたときこれ
 	public void SaveCarColor()
 	{
-		//carRGB.SetCarColor(carColor);
+		carRGB.SetCarColor(carColor);
 	}
 	///メソッドで
 	//carRGB.SetCarColor(c);を保管

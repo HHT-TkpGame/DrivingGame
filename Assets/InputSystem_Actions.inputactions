@@ -282,17 +282,6 @@
                 },
                 {
                     "name": "",
-                    "id": "dd3e23db-8ea6-4938-b78a-526b59718747",
-                    "path": "<HID::44F B677>/button3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Neutral",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "9b26e7d3-79a6-4a94-99ea-3bc4fffdf478",
                     "path": "<Keyboard>/1",
                     "interactions": "",
@@ -305,7 +294,7 @@
                 {
                     "name": "",
                     "id": "354e91c2-f13c-4426-a9d8-6cf230f51409",
-                    "path": "<HID::44F B677>/button5",
+                    "path": "<HID::44F B677>/button3",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -326,30 +315,8 @@
                 },
                 {
                     "name": "",
-                    "id": "c81b586e-db35-42b8-ab67-1506ab6b71f5",
-                    "path": "<HID::44F B677>/button6",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Gear2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c97193dd-fe01-4bd8-9a7e-c8ee86a10a47",
                     "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Gear3",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a8b093b9-10f5-45d1-ae37-17e78efd2232",
-                    "path": "<HID::44F B677>/button4",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -436,6 +403,17 @@
                 },
                 {
                     "name": "",
+                    "id": "5a45ff1b-9208-4455-a00b-8fb7744b1e00",
+                    "path": "<HID::44F B677>/button9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchView",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "4eb79b7d-e97f-48ab-9b3c-be0e814d8b8b",
                     "path": "<Keyboard>/c",
                     "interactions": "",
@@ -447,8 +425,30 @@
                 },
                 {
                     "name": "",
+                    "id": "d30710c5-e9fb-4d7b-9089-06a62c89fd3f",
+                    "path": "<HID::44F B677>/button10",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BehindView",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5f0b0c63-7db2-4e52-bcb4-f9b4b104a604",
-                    "path": "<Keyboard>/k",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MenuOpen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0339aff3-ffbf-4171-b30f-925f781221bf",
+                    "path": "<HID::44F B677>/button13",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -480,8 +480,41 @@
                 },
                 {
                     "name": "",
+                    "id": "4bcc105b-049e-41db-83e7-320d7d7ea115",
+                    "path": "<HID::44F B677>/hat/up",
+                    "interactions": "",
+                    "processors": "Scale(factor=-1)",
+                    "groups": "",
+                    "action": "MenuArrows",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "315d65d8-2ed1-48bb-882f-319806235c2b",
+                    "path": "<HID::44F B677>/hat/down",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": "",
+                    "action": "MenuArrows",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c57bf2ff-3c70-4d7d-83fd-08458ad24905",
-                    "path": "<Keyboard>/p",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MenuClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8f0df01-0bd5-43ed-8453-5fe9433a8a48",
+                    "path": "<HID::44F B677>/button5",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class VehicleController : MonoBehaviour
 {
+    [SerializeField] SteeringRotator rotator;
     [SerializeField] StatusUITemp tempUI;//デバッグ用　後々削除
     [SerializeField] VehicleInputHandler inputHandler;
     [SerializeField] CarSpec carSpec;
@@ -53,6 +54,7 @@ public class VehicleController : MonoBehaviour
             carSpec.MaxRPM
         );
         rb = GetComponent<Rigidbody>();
+        rotator.Initialize(inputHandler);
     }
 
     void OnDestroy()
@@ -72,10 +74,6 @@ public class VehicleController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
     void FixedUpdate()
     {
         float dt = Time.fixedDeltaTime;

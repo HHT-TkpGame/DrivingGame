@@ -74,6 +74,8 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
     }
     void SetMenuState()
     {
+        if(currentState != InGameSceneState.Play 
+            && currentState != InGameSceneState.Menu) { return; }
         SetState(InGameSceneState.Menu);
     }
     void NextSceneRequest()
