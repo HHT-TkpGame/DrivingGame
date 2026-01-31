@@ -138,7 +138,7 @@ public class EngineModel
             float rpmDiff = idleRPM - currentRPM;
 
             // ‰ñ“]‚ª‰º‚ª‚Á‚½‚ç‚³‚ç‚ÉŠJ‚¯‚éiP§Œäj
-            float correction = Mathf.Clamp(rpmDiff * 0.008f, 0f, 0.03f);
+            float correction = Mathf.Clamp(rpmDiff * 0.008f, 0f, 0.05f);
 
             effectiveThrottle += correction;
         }
