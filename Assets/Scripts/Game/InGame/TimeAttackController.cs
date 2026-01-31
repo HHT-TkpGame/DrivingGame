@@ -63,7 +63,7 @@ public class TimeAttackController : MonoBehaviour, IInGameController
     public void StartGame()
     {
         vehicleController.SetIsPlaying();
-        uIController.Initialize(tracker);
+        uIController.Initialize(tracker, handler);
         uIController.StartInGameUI();
     }
     public void StartResult()

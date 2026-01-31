@@ -70,6 +70,7 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
     }
     void SetTransitionState()
     {
+        if(currentState != InGameSceneState.Result) { return; }
         SetState(InGameSceneState.Transitioning);
     }
     void SetMenuState()

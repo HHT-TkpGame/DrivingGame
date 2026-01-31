@@ -21,6 +21,7 @@ public class VehicleController : MonoBehaviour
     Rigidbody rb;
     float vehicleInertiaSmoothed = 0.05f;
     bool isPlaying = false;
+    [SerializeField] EngineSoundController engineSoundController;
 
     public float SpeedKPH
     {
@@ -58,6 +59,7 @@ public class VehicleController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rotator.Initialize(inputHandler);
         cameraController.Initialize(inputHandler);
+        engineSoundController.Initialize(this, carSpec, engine, inputHandler);
     }
 
     void OnDestroy()

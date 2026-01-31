@@ -2,16 +2,18 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-
+public enum EngineState
+{
+    Stalled,
+    Running
+}
 public class EngineModel
 {
-    enum EngineState
-    {
-        Stalled,
-        Running
-    }
+
     EngineState currentState = EngineState.Running;
+    public EngineState CurrentState => currentState;
     Dictionary<EngineState, Action<float, float, float>> updateMethods;
+    public event Action OnEngineStarted;
 
     [Header("車種による調整値")]
     float maxRPM;           // レッドライン
@@ -151,11 +153,11 @@ public class EngineModel
 
         currentState = EngineState.Running;
 
-        // 見た目用：ちょい上で始動した感じを出すなら idleRPM * 1.05f とかでも良い
         currentRPM = Mathf.Max(idleRPM, 800f);
 
-        // 角速度も同期しておく（次のApplyExternalTorqueで破綻しない）
         engineAngularVelocity = currentRPM * 2f * Mathf.PI / 60f;
+
+        OnEngineStarted?.Invoke();
 
     }
 }

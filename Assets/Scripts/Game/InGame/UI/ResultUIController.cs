@@ -16,14 +16,17 @@ public class ResultUIController : MonoBehaviour
     float blinkInterval = BLINK_INTERVAL;
     float blinkCount;
     const float MAX_BLINK = 10;
-
+    VehicleInputHandler handler;
+    public void Initialize(VehicleInputHandler handler)
+    {
+        handler.InMenuClick += OnExitButtonPressed;
+    }
 
     void Start()
     {
         resultMover.OnMoveEnd += StartBlink;
         onBlinkEnd += DisplayButton;
         exitButton = exitButtonObj.GetComponent<Button>();
-        exitButton.onClick.AddListener(OnExitButtonPressed);
         exitButtonObj.SetActive(false);
     }
 

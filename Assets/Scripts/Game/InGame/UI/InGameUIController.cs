@@ -10,12 +10,14 @@ public class InGameUIController : MonoBehaviour
     public event Action OnExitRequested;
     public void Initialize
     (
-        ICheckPointReceiver receiver
+        ICheckPointReceiver receiver,
+        VehicleInputHandler handler
     )
     {
         receiver.OnCheckPointUpdated += lapUI.UpdateDisplay;
         timer.OnTimerStopped += resultUI.SetResult;
         lapUI.Initialize(receiver.MaxCheckPoint);
+        resultUI.Initialize(handler);
         resultUI.exitButtonPressed += EndResultRequest;
     }
     public void StartInGameUI()

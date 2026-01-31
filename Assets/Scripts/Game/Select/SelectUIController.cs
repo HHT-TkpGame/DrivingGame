@@ -111,7 +111,7 @@ public class SelectUIController : MonoBehaviour
     {
         //CursorUI‚ª•\Ž¦‚³‚ê‚Ä‚¢‚È‚¢‚È‚çGameMode‚ð‘I‘ð‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚é
         if (!isModeSelecting) { return; }
-
+        if(currentMode == GameModeState.FreeDrive) { return; }//ToDo Žb’è‚Å”½‰ž‚µ‚È‚¢‚æ‚¤‚É‘Î‰ž
         SelectGameMode(currentMode);
     }
 
