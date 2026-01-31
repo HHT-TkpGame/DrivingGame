@@ -10,7 +10,6 @@ public class CheckPointGenerator : MonoBehaviour
 
     private void Start()
     {
-        Generate();
     }
     public void Initialize(ICheckPointReceiver receiver)
     {
