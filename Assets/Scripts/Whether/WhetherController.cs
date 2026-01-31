@@ -5,9 +5,6 @@ using UnityEngine.VFX;
 
 public class WhetherController : MonoBehaviour
 {
-    const int SUNNY = 0;
-    const int RAINY = 1;
-
 	[Header("ê∞ìVéûÇÃVolume"), SerializeField] VolumeProfile sunnyVolume;
 	[Header("âJìVéûÇÃVolume"), SerializeField] VolumeProfile rainyVolume;
 
@@ -41,7 +38,7 @@ public class WhetherController : MonoBehaviour
 	[SerializeField] MeshRenderer glassMat;
 	[SerializeField] MeshRenderer courseMats;
 	[SerializeField] MeshRenderer slopeMat;
-	[SerializeField] WheelEffectController wheelEffectController;
+	[SerializeField] WheelEffectController[] wheelEffectControllers;
 
 	
 
@@ -95,7 +92,11 @@ public class WhetherController : MonoBehaviour
         int whether = UnityEngine.Random.Range(0, length);
 		CurrentState = (WhetherState)whether;
 		
-		wheelEffectController.Init(this);
+		for(int i = 0; i < wheelEffectControllers.Length; i++)
+		{
+			wheelEffectControllers[i].Init(this);
+
+		}
 
 		Material[] mats = courseMats.materials;
 
@@ -143,6 +144,5 @@ public class WhetherController : MonoBehaviour
 		Debug.Log(state);
 		puddleColliders.SetActive(state);
 		sandColliders.SetActive(!state);
-		
 	}
 }

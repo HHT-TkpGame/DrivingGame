@@ -19,6 +19,14 @@ public class WheelEffectController : MonoBehaviour
 		particle = particles[value];
 	}
 
+	private void OnTriggerEnter(Collider other)
+	{
+		StartEffect();
+	}
+	private void OnTriggerExit(Collider other)
+	{
+		StopEffect();
+	}
 	public void StartEffect()
 	{
 		particle.Play();
