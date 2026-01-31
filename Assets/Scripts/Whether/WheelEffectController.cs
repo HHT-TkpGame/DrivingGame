@@ -2,23 +2,29 @@ using UnityEngine;
 
 public class WheelEffectController : MonoBehaviour
 {
-	[Header("タイヤから発生するエフェクト"), SerializeField] ParticleSystem[] particles;
+	//[Header("晴れのエフェクト"), SerializeField] ParticleSystem sunnyParticle;
+	//[Header("雨のエフェクト"), SerializeField] ParticleSystem rainyParticle;
+
+	[Header("エフェクト"), SerializeField] ParticleSystem[] particles;
 
 	ParticleSystem particle;
 	int value;
-
+	public enum Weather
+	{
+		sunny, rainy
+	}
 	public void Init(WhetherController w)
 	{
-		particle = GetComponent<ParticleSystem>();
 		value = (int)w.CurrentState;
+		particle = particles[value];
 	}
 
 	public void StartEffect()
 	{
-		particles[value].Play();
+		particle.Play();
 	}
 	public void StopEffect()
 	{
-		particles[value].Stop();
+		particle.Stop();
 	}
 }

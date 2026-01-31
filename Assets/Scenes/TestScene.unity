@@ -1211,11 +1211,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particles:
-  - {fileID: 8301555742589541024, guid: 869e98f233368844d902fb3058b73467, type: 3}
-  - {fileID: 992286452950541054, guid: 0305a4e7fb6fd524daef57972e3ccf3c, type: 3}
+  - {fileID: 1727776185}
+  - {fileID: 1667414369}
+--- !u!198 &1667414369 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 992286452950541054, guid: 0305a4e7fb6fd524daef57972e3ccf3c, type: 3}
+  m_PrefabInstance: {fileID: 1393216481}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1727776183 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8407774439700526087, guid: 869e98f233368844d902fb3058b73467, type: 3}
+  m_PrefabInstance: {fileID: 837011100}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1727776185 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8301555742589541024, guid: 869e98f233368844d902fb3058b73467, type: 3}
   m_PrefabInstance: {fileID: 837011100}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1761942021
@@ -1357,10 +1367,20 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!1 &1764558633 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3266602862116973383, guid: 5d8ca558bef114841adb6a986bc707e0, type: 3}
+  m_PrefabInstance: {fileID: 4788080868642808132}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &1845514509 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2931375497905661774, guid: e7ebd48c1f3fb264684105d2dbcc7c35, type: 3}
   m_PrefabInstance: {fileID: 2676408631179466436}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1887621184 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5203742201376901197, guid: 5f04fbdd9b7041140b36f7a8527bc88b, type: 3}
+  m_PrefabInstance: {fileID: 3976024403695306848}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1946987264 stripped
 GameObject:
@@ -1475,13 +1495,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1966294494}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.10732351, y: 0.69891465, z: -0.10732351, w: 0.69891465}
-  m_LocalPosition: {x: -5.52, y: 2.55, z: 0}
+  m_LocalRotation: {x: 0.14103492, y: 0.6928991, z: -0.14103492, w: 0.6928991}
+  m_LocalPosition: {x: -10.07, y: 6.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1438749656}
-  m_LocalEulerAnglesHint: {x: 17.46, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 23.01, y: 90, z: 0}
 --- !u!114 &1966294498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1657,10 +1677,10 @@ MonoBehaviour:
   sunnyGlassMat: {fileID: 8556262120643298411, guid: 15fe043ea767e384cb0afd68b7b8c0c5, type: 3}
   rainyGlassMat: {fileID: 2100000, guid: 83f90b42f2b917e458f3161657e99a27, type: 2}
   sunnyCourseMat: {fileID: 2100000, guid: c6c2b8f2efc46e34fb3e10df94766ff6, type: 2}
-  rainyCourseMat: {fileID: 2100000, guid: c6c2b8f2efc46e34fb3e10df94766ff6, type: 2}
+  rainyCourseMat: {fileID: 2100000, guid: 7bf69196154e3814fac94af4fab08f5b, type: 2}
   rainEffect: {fileID: 1279477984}
-  puddleColliders: {fileID: 5203742201376901197, guid: 5f04fbdd9b7041140b36f7a8527bc88b, type: 3}
-  sandColliders: {fileID: 3266602862116973383, guid: 5d8ca558bef114841adb6a986bc707e0, type: 3}
+  puddleColliders: {fileID: 1887621184}
+  sandColliders: {fileID: 1764558633}
   sunnyCoursePhysic: {fileID: 13400000, guid: a0098d237f11b9f4a97b7b071e42d93e, type: 2}
   rainyCoursePhysic: {fileID: 13400000, guid: 5b4e9ea40ed72ee4e952f675b6a8bb25, type: 2}
   sunnyGroundPhysic: {fileID: 13400000, guid: 6dcc88e0ab057e844b9999c752170e67, type: 2}
@@ -2154,6 +2174,10 @@ PrefabInstance:
     - target: {fileID: 3266602862116973383, guid: 5d8ca558bef114841adb6a986bc707e0, type: 3}
       propertyPath: m_Name
       value: sand_only1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3266602862116973383, guid: 5d8ca558bef114841adb6a986bc707e0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

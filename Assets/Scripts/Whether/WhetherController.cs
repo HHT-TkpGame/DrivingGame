@@ -134,14 +134,15 @@ public class WhetherController : MonoBehaviour
 				CollidersState(true);
 				break;
         }
-		Debug.Log(courseMats.material);
+		//Debug.Log(courseMats.material);
     }
 
 
 	void CollidersState(bool state)
 	{
-			puddleColliders.SetActive(state);
-			sandColliders.SetActive(!state);
+		Debug.Log(state);
+		puddleColliders.SetActive(state);
+		sandColliders.SetActive(!state);
 		
 	}
 }
