@@ -167,6 +167,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "LookLeft",
+                    "type": "Button",
+                    "id": "5cfe3fed-febd-4bb6-9e1c-ae8d58e8e897",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LookRight",
+                    "type": "Button",
+                    "id": "43503e0b-d807-47a9-8e94-daf22241529c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -521,6 +539,50 @@
                     "action": "MenuClick",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "947a1e55-7fef-4459-922f-f43bbd77d265",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LookLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "05e68cda-7ad1-4d2c-95bf-5822621718c5",
+                    "path": "<HID::44F B677>/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LookLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bbaf015b-7350-4de2-b00d-ce45a4a8540f",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LookRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "557526d3-2961-4067-a703-bbc8167153ce",
+                    "path": "<HID::44F B677>/button2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LookRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -606,8 +668,30 @@
                 },
                 {
                     "name": "",
+                    "id": "f675b514-bc96-4ca9-a8d7-355852e980ca",
+                    "path": "<HID::44F B677>/button5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AnyKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9824bbcd-56a8-4c6b-aadb-b893a000a7cf",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5ba0e783-1cd4-46bf-86b4-d5fde738f59e",
+                    "path": "<HID::44F B677>/button5",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -639,8 +723,41 @@
                 },
                 {
                     "name": "",
+                    "id": "6723ab77-a277-444c-9e61-64f23ae8c03d",
+                    "path": "<HID::44F B677>/hat/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ModeSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3d3b5ad5-4cb8-49c6-9900-d594dc4e889e",
+                    "path": "<HID::44F B677>/hat/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ModeSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "18fa05cc-76c1-4ff2-801d-6ec2ed79e9c6",
                     "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClickButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0cc3014d-ccdc-45e9-9a09-6c55bc113fa8",
+                    "path": "<HID::44F B677>/button5",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -672,8 +789,41 @@
                 },
                 {
                     "name": "",
+                    "id": "4cb9e69f-0483-453b-b897-a94592f91efa",
+                    "path": "<HID::44F B677>/hat/left",
+                    "interactions": "",
+                    "processors": "Scale(factor=-1)",
+                    "groups": "",
+                    "action": "SliderMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "98dc0c2e-2582-472c-b9ae-937159ea81eb",
+                    "path": "<HID::44F B677>/hat/right",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": "",
+                    "action": "SliderMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "b0741e73-45cb-4455-9ad4-9bcf040159f4",
                     "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "Scale(factor=-1)",
+                    "groups": "",
+                    "action": "CursorArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eaa7c184-15c5-48e6-8b71-dfb1f2bab9b4",
+                    "path": "<HID::44F B677>/hat/up",
                     "interactions": "",
                     "processors": "Scale(factor=-1)",
                     "groups": "",
@@ -694,8 +844,30 @@
                 },
                 {
                     "name": "",
+                    "id": "3151160e-6e21-4ec0-906a-adbb71d9e03a",
+                    "path": "<HID::44F B677>/hat/down",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": "",
+                    "action": "CursorArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "0139eba4-4a96-4812-8bae-344cef6a79b9",
                     "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ResetColor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "48cb976d-15ff-49cf-bbcf-4bfa25dc6aa3",
+                    "path": "<HID::44F B677>/button6",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

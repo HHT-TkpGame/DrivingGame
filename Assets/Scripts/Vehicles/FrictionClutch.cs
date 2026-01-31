@@ -17,6 +17,7 @@ public class FrictionClutch
         float maxDelta = engagementRiseRate * dt;
 
         Engagement = Mathf.MoveTowards(Engagement, target, maxDelta);
+        //Debug.Log("Engagement" + Engagement);
     }
 
     AnimationCurve curve;

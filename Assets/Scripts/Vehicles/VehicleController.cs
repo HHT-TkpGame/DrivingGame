@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class VehicleController : MonoBehaviour
 {
+    [SerializeField] CameraController cameraController;
     [SerializeField] SteeringRotator rotator;
     [SerializeField] StatusUITemp tempUI;//デバッグ用　後々削除
     [SerializeField] VehicleInputHandler inputHandler;
@@ -55,6 +56,7 @@ public class VehicleController : MonoBehaviour
         );
         rb = GetComponent<Rigidbody>();
         rotator.Initialize(inputHandler);
+        cameraController.Initialize(inputHandler);
     }
 
     void OnDestroy()
