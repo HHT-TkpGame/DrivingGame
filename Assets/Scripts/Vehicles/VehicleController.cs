@@ -35,7 +35,7 @@ public class VehicleController : MonoBehaviour
 
     void Awake()
     {
-        engine = new EngineModel(carSpec);
+        engine = new EngineModel(carSpec, inputHandler);
         transmission = new TransmissionModel(carSpec);
         clutch = new FrictionClutch(
             clutchCurve.Curve,

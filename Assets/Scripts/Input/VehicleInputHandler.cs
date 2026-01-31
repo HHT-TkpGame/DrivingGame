@@ -26,6 +26,7 @@ public class VehicleInputHandler : MonoBehaviour
     public event Action OnFacingDirectionButtonPressed;
     public event Action<bool> OnLookLeftChanged;
     public event Action<bool> OnLookRightChanged;
+    public event Action OnEngineStartButtonPressed;
 
     public void MenuButtonPressed(InputAction.CallbackContext context)
     {
@@ -77,7 +78,13 @@ public class VehicleInputHandler : MonoBehaviour
             OnLookRightChanged?.Invoke(false);
         }
     }
-
+    public void EngineStartButtonPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnEngineStartButtonPressed?.Invoke();
+        }
+    }
     public void MenuArrowPressed(InputAction.CallbackContext context)
     {
         if (context.performed)

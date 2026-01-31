@@ -185,6 +185,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EngineStarter",
+                    "type": "Button",
+                    "id": "49941821-21c5-4466-ad88-cb79702f927f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -581,6 +590,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "LookRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cbf3d721-006b-4ac4-938d-df9637eeee81",
+                    "path": "<HID::44F B677>/button12",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EngineStarter",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77ddea12-f683-4520-ac7a-6ce3e0329732",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EngineStarter",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

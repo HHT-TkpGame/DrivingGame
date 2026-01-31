@@ -38,14 +38,14 @@ public class EngineModel
     public float CurrentRPM => currentRPM;
     float engineAngularVelocity;
 
-    public EngineModel(CarSpec spec)
+    public EngineModel(CarSpec spec, VehicleInputHandler handler)
     {
         maxRPM = spec.MaxRPM;
         idleRPM = spec.IdleRPM;
         torqueCurve = spec.TorqueCurve;
         flywheelInertia = spec.FlywheelInertia;
         pumpingLossFactor = spec.PumpingLossFactor;
-
+        handler.OnEngineStartButtonPressed += RestartToIdle;
         engineAngularVelocity = currentRPM * 2f * Mathf.PI / 60f;
     }
     
@@ -143,5 +143,19 @@ public class EngineModel
             effectiveThrottle += correction;
         }
         return effectiveThrottle;
+    }
+    //ストール時にエンジン再点火を試みる
+    public void RestartToIdle()
+    {
+        if (currentState != EngineState.Stalled) { return; }
+
+        currentState = EngineState.Running;
+
+        // 見た目用：ちょい上で始動した感じを出すなら idleRPM * 1.05f とかでも良い
+        currentRPM = Mathf.Max(idleRPM, 800f);
+
+        // 角速度も同期しておく（次のApplyExternalTorqueで破綻しない）
+        engineAngularVelocity = currentRPM * 2f * Mathf.PI / 60f;
+
     }
 }
