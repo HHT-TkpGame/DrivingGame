@@ -6,8 +6,13 @@ public class FrictionClutch
     //クラッチの接続状態(1が接続, 0が切断)
     //InputHandlerからの入力は押されていない時が0を返す
     //本来は入力がない時に接続状態が1になるべきなので値を反対にする
-    public void SetEngagement(float clutchInput)
+    public void SetEngagement(float clutchInput, bool isPlaying)
     {
+        if (!isPlaying)
+        {
+            Engagement = 0f;
+            return;
+        }
         float raw = 1f - clutchInput;
         float target = curve.Evaluate(raw);
 
