@@ -5,19 +5,20 @@ public class WheelEffectController : MonoBehaviour
 	[Header("タイヤから発生するエフェクト"), SerializeField] ParticleSystem[] particles;
 
 	ParticleSystem particle;
+	int value;
 
 	public void Init(WhetherController w)
 	{
-		int value = (int)w.CurrentState;
-		particle = particles[value];
+		particle = GetComponent<ParticleSystem>();
+		value = (int)w.CurrentState;
 	}
 
 	public void StartEffect()
 	{
-		particle.Play();
+		particles[value].Play();
 	}
 	public void StopEffect()
 	{
-		particle.Stop();
+		particles[value].Stop();
 	}
 }
