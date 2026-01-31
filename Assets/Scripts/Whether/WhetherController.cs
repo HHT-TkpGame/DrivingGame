@@ -25,6 +25,16 @@ public class WhetherController : MonoBehaviour
 	[Header("水たまりがある場所のコライダー"), SerializeField] BoxCollider[] puddleColliders;
 	[Header("砂地がある場所のコライダー"), SerializeField] MeshCollider[] sandColliders;
 
+	[Header("晴天時のPhysicMat"), SerializeField] PhysicsMaterial sunnyCoursePhysic;
+	[Header("雨天時のPhysicMat"), SerializeField] PhysicsMaterial rainyCoursePhysic;
+
+	[Header("晴天時のPhysicMat"), SerializeField] PhysicsMaterial sunnyGroundPhysic;
+	[Header("雨天時のPhysicMat"), SerializeField] PhysicsMaterial rainyGroundPhysic;
+
+	[Header("コースのコライダー"), SerializeField] MeshCollider courseCollider;
+	[Header("地面のコライダー"), SerializeField] MeshCollider groundCollider;
+
+
 	[SerializeField] Volume weatherVol;
 
 	[SerializeField] MeshRenderer groundMat;
@@ -97,6 +107,8 @@ public class WhetherController : MonoBehaviour
 				glassMat.material = sunnyGlassMat;
 				courseMat.material = sunnyCourseMat;
 				slopeMat.material = sunnyCourseMat;
+				courseCollider.material = sunnyCoursePhysic;
+				groundCollider.material = sunnyGroundPhysic;
 
 
 				rainEffect.Stop();
@@ -110,6 +122,8 @@ public class WhetherController : MonoBehaviour
 				glassMat.material = rainyGlassMat;
 				courseMat.material = rainyCourseMat;
 				slopeMat.material = rainyCourseMat;
+				courseCollider.material = rainyCoursePhysic;
+				groundCollider.material = rainyGroundPhysic;
 
 				rainEffect.Play();
 				Debug.Log("雨");
