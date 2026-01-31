@@ -25,6 +25,7 @@ public class SelectUIController : MonoBehaviour
     [SerializeField] AudioClip arrowSe;
     [SerializeField] AudioClip clickSe;
     [SerializeField] AudioClip startSe;
+    [SerializeField] AudioClip sliderSe;
     AudioSource se;
 
     void Start()
@@ -82,13 +83,12 @@ public class SelectUIController : MonoBehaviour
     public void SetSliderVal(float f)
     {
         carColorSetter.MoveSlider( f );
-        
-        
-        se.clip = arrowSe;
-        if (!se.isPlaying)
+
+		se.clip = sliderSe;
+		if (!se.isPlaying)
         {
             se.Play();
-        }
+		}
     }
     public void SetGameMode()
     {

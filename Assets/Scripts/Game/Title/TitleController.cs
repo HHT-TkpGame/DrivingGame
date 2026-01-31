@@ -8,6 +8,7 @@ public class TitleController : MonoBehaviour, IGameStateRequestable
     public event Action<GameState> OnNextRequested;
     [SerializeField] GameStartText gameStartText;
     [SerializeField] FadeController fadeController;
+    [SerializeField] BGMSetter BGM;
     void Start()
     {
         SetState(currentState);
@@ -34,6 +35,7 @@ public class TitleController : MonoBehaviour, IGameStateRequestable
                 break;
             case TitleSceneState.Transitioning:
                 gameStartText.StartBlink();
+                BGM.StartBGMDown();
                 break;
         }
     }

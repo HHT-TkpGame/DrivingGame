@@ -10,6 +10,7 @@ public class SelectController : MonoBehaviour, IGameStateRequestable, IGameModeR
     [SerializeField] FadeController fadeController;
     [SerializeField] SelectUIController uiController;
     [SerializeField] SelectUIInputHandler inputHandler;
+    [SerializeField] BGMSetter BGM;
     void Start()
     {
         SetState(currentState);
@@ -92,6 +93,7 @@ public class SelectController : MonoBehaviour, IGameStateRequestable, IGameModeR
                 break;
             case SelectSceneState.Transitioning:
                 fadeController.StartAnimation();
+                BGM.StartBGMDown();
                 break;
         }
     }
