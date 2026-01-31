@@ -6,6 +6,8 @@ public class TimeAttackController : MonoBehaviour, IInGameController
     [SerializeField] VehicleController vehicleController;
     [SerializeField] InGameUIController uIController;
     [SerializeField] CheckPointGenerator generator;
+    [SerializeField] AudioSource goalSe;
+    [SerializeField] AudioSource startSe;
     LapTracker tracker;
     public event Action OnInitializeEnd;
     public event Action OnGameEnd;
@@ -24,6 +26,7 @@ public class TimeAttackController : MonoBehaviour, IInGameController
         this.handler = handler; 
         tracker = new LapTracker();
         fade.OnFadeInEnd += countdown.StartCountdown;
+        fade.OnFadeInEnd += startSe.Play;
         countdown.OnCountdownEnd += EndInitialize;
         tracker.OnGoal += EndGame;
         uIController.OnExitRequested += EndResult;
@@ -69,6 +72,7 @@ public class TimeAttackController : MonoBehaviour, IInGameController
     public void StartResult()
     {
         uIController.StartResultUI();
+        goalSe.Play();
     }
     public void StartTransition()
     {
