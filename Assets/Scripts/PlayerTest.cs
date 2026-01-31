@@ -6,9 +6,11 @@ public class PlayerTest : MonoBehaviour
 	[SerializeField] float rotateSpeed = 120f;
 
 	CharacterController characterController;
+	WheelEffectController wheelEffectController;
 	private void Start()
 	{
 		characterController = GetComponent<CharacterController>();
+		wheelEffectController = GetComponent<WheelEffectController>();
 	}
 	void Update()
 	{
@@ -44,9 +46,11 @@ public class PlayerTest : MonoBehaviour
 		private void OnTriggerEnter(Collider other)
 	{
 		Debug.Log("ddwdw"+other.name);
+		wheelEffectController.StartEffect();
 	}
 	private void OnTriggerExit(Collider other)
 	{
 		Debug.Log("íEèo" + other.name);
+		wheelEffectController.StopEffect();
 	}
 }

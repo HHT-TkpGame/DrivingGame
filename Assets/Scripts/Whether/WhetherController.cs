@@ -22,8 +22,8 @@ public class WhetherController : MonoBehaviour
 
 	[Header("雨エフェクト"), SerializeField] VisualEffect rainEffect;
 
-	[Header("水たまりがある場所のコライダー"), SerializeField] BoxCollider[] puddleColliders;
-	[Header("砂地がある場所のコライダー"), SerializeField] MeshCollider[] sandColliders;
+	[Header("水たまりがある場所のコライダー"), SerializeField] GameObject puddleColliders;
+	[Header("砂地がある場所のコライダー"), SerializeField] GameObject sandColliders;
 
 	[Header("晴天時のPhysicMat"), SerializeField] PhysicsMaterial sunnyCoursePhysic;
 	[Header("雨天時のPhysicMat"), SerializeField] PhysicsMaterial rainyCoursePhysic;
@@ -39,11 +39,11 @@ public class WhetherController : MonoBehaviour
 
 	[SerializeField] MeshRenderer groundMat;
 	[SerializeField] MeshRenderer glassMat;
-	[SerializeField] MeshRenderer courseMat;
+	[SerializeField] MeshRenderer courseMats;
 	[SerializeField] MeshRenderer slopeMat;
 	[SerializeField] WheelEffectController wheelEffectController;
 
-
+	
 
 	/// <summary>
 	/// ゲーム内における天候の差
@@ -95,9 +95,12 @@ public class WhetherController : MonoBehaviour
         int whether = UnityEngine.Random.Range(0, length);
 		CurrentState = (WhetherState)whether;
 		
-		//wheelEffectController.Init(this);
+		wheelEffectController.Init(this);
 
-        switch (CurrentState)
+		Material[] mats = courseMats.materials;
+
+
+		switch (CurrentState)
         {
             case WhetherState.Sunny:
 
@@ -105,7 +108,8 @@ public class WhetherController : MonoBehaviour
 				weatherVol.profile = sunnyVolume;
 				groundMat.material = sunnyGroundMat;
 				glassMat.material = sunnyGlassMat;
-				courseMat.material = sunnyCourseMat;
+				mats[1] = sunnyCourseMat;
+				courseMats.materials = mats;
 				slopeMat.material = sunnyCourseMat;
 				courseCollider.material = sunnyCoursePhysic;
 				groundCollider.material = sunnyGroundPhysic;
@@ -113,35 +117,31 @@ public class WhetherController : MonoBehaviour
 
 				rainEffect.Stop();
 				Debug.Log("晴れた");
-				//CollidersState(false);
+				CollidersState(false);
 				break;
             case WhetherState.Rainy:
 
 				weatherVol.profile = rainyVolume;
 				groundMat.material = rainyGroundMat;
 				glassMat.material = rainyGlassMat;
-				courseMat.material = rainyCourseMat;
+				courseMats.materials[1] = rainyCourseMat;
 				slopeMat.material = rainyCourseMat;
 				courseCollider.material = rainyCoursePhysic;
 				groundCollider.material = rainyGroundPhysic;
 
 				rainEffect.Play();
 				Debug.Log("雨");
-				//CollidersState(true);
+				CollidersState(true);
 				break;
         }
+		Debug.Log(courseMats.material);
     }
 
 
 	void CollidersState(bool state)
 	{
-		for (int i = 0; i < puddleColliders.Length; i++)
-		{
-			puddleColliders[i].enabled = state;
-		}
-		for (int i = 0; i < sandColliders.Length; i++)
-		{
-			sandColliders[i].enabled = !state;
-		}
+			puddleColliders.SetActive(state);
+			sandColliders.SetActive(!state);
+		
 	}
 }

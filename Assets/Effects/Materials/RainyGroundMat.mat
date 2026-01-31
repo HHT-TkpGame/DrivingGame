@@ -112,11 +112,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Puddies:
-        m_Texture: {fileID: 2800000, guid: 6796ef6517b76b744a1999615b393d1d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2eca006152ec2a943a8f6e609a5ae80e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Ripple:
-        m_Texture: {fileID: 2800000, guid: b732bf0e02b0d67449077e878fb01f13, type: 3}
+        m_Texture: {fileID: 2800000, guid: d6b9ef3875fafa04280e7763db20babe, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
@@ -297,7 +297,7 @@ Material:
     - _MainTiling: {r: 1, g: 1, b: 0, a: 0}
     - _RippleSpeed: {r: 0.4, g: 0, b: 0, a: 0}
     - _RippleTiling: {r: 220, g: 230, b: 0, a: 0}
-    - _SmoothTiling: {r: 8, g: 14, b: 0, a: 0}
+    - _SmoothTiling: {r: 19, g: 25, b: 0, a: 0}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
