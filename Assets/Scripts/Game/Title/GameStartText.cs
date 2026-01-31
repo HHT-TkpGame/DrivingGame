@@ -11,6 +11,8 @@ public class GameStartText : MonoBehaviour
     float timer;
     [SerializeField] float speed;
 
+    AudioSource se;
+
     bool isBlinking;
     const float BLINK_INTERVAL = 0.2f;
     float blinkInterval;
@@ -20,6 +22,7 @@ public class GameStartText : MonoBehaviour
     void Start()
     {
         text.color = baseColor;
+        se= GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -52,5 +55,6 @@ public class GameStartText : MonoBehaviour
     {
         isBlinking = true;
         text.color = baseColor;
+        se.Play();
     }
 }

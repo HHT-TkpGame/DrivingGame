@@ -22,6 +22,11 @@ public class SelectUIController : MonoBehaviour
     //ゲームモードを選ぶときに選ぶ前にクリックされるの防止
     bool isModeSelecting;
 
+    [SerializeField] AudioClip arrowSe;
+    [SerializeField] AudioClip clickSe;
+    [SerializeField] AudioClip startSe;
+    AudioSource se;
+
     void Start()
     {
         modeMover.OnReturnEnd += EndModeSelect;
@@ -37,18 +42,30 @@ public class SelectUIController : MonoBehaviour
         customMover.OnMoveEnd += ColorSetterInit;
         customizeController.OnCustomEnd += customMover.Return;
         customizeController.OnCustomEnd += carColorSetter.SaveCarColor;
+        customizeController.OnCustomEnd += StartEndSe;
         customMover.OnReturnEnd += EndCustomize;
+
+        se = GetComponent<AudioSource>();
         
         cursorImage.SetActive( false );
     }
 
+    void StartEndSe()
+    {
+        //ここの音違うのでもいいかも
+        se.clip = startSe;
+        se.Play();
+    }
 	void ColorSetterInit()
 	{
         carColorSetter.Initialize();
 	}
     public void SetDefaultCarColor()
     {
-       carColorSetter.SetStandardColor();
+		se.clip = arrowSe;
+		se.Play();
+
+		carColorSetter.SetStandardColor();
     }
     public void FinishSelectScene()
     {
@@ -58,11 +75,20 @@ public class SelectUIController : MonoBehaviour
 	public void SetColorVert(float f)
     {
         carColorSetter.CursorLift( f );
+        se.clip = arrowSe;
+        se.Play();
     }
 
     public void SetSliderVal(float f)
     {
         carColorSetter.MoveSlider( f );
+        
+        
+        se.clip = arrowSe;
+        if (!se.isPlaying)
+        {
+            se.Play();
+        }
     }
     public void SetGameMode()
     {
@@ -70,6 +96,9 @@ public class SelectUIController : MonoBehaviour
         currentMode = currentMode == GameModeState.TimeAttack?
             GameModeState.FreeDrive : GameModeState.TimeAttack;
         cursorImage.transform.localPosition = modeButtons[(int)currentMode].localPosition;
+
+        se.clip = arrowSe;
+        se.Play();
 
         if (!isModeSelecting)
         {
@@ -89,6 +118,9 @@ public class SelectUIController : MonoBehaviour
     void SelectGameMode(GameModeState mode)
     {
         Debug.Log("StartReturn");
+        se.clip = clickSe; 
+        se.Play();
+        
         OnModeSelected?.Invoke(mode);
         modeMover.Return();
     }
