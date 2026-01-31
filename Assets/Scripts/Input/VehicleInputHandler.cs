@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class VehicleInputHandler : MonoBehaviour
 {
     [SerializeField] PlayerInput input;
+    [SerializeField] SerialInputHandler serialInput;
     InputAction clutchAct;
     InputAction clutchKeyboardAct;
     InputAction accelAct;
@@ -21,6 +22,11 @@ public class VehicleInputHandler : MonoBehaviour
     public event Action OnMenuButtonPressed;
     public event Action InMenuClick;
     public event Action<float> MenuArrows;
+    public event Action OnPerspectiveButtonPressed;
+    public event Action OnFacingDirectionButtonPressed;
+    public event Action<bool> OnLookLeftChanged;
+    public event Action<bool> OnLookRightChanged;
+
     public void MenuButtonPressed(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -35,14 +41,50 @@ public class VehicleInputHandler : MonoBehaviour
             InMenuClick?.Invoke();    
         }
     } 
+    public void PerspectiveButtonPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnPerspectiveButtonPressed?.Invoke();
+        }
+    }
+    public void FacingDirectionButtonPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnFacingDirectionButtonPressed?.Invoke();
+        }
+    }
+    public void LookLeft(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnLookLeftChanged?.Invoke(true);
+        }
+        if (context.canceled)
+        {
+            OnLookLeftChanged?.Invoke(false);
+        }
+    }
+    public void LookRight(InputAction.CallbackContext context)
+    {
+        if (context.performed) 
+        { 
+            OnLookRightChanged?.Invoke(true);
+        }
+        if (context.canceled)
+        {
+            OnLookRightChanged?.Invoke(false);
+        }
+    }
 
     public void MenuArrowPressed(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             MenuArrows?.Invoke(context.ReadValue<float>());
-			
 		}
+
     }
 
     private void Awake()
@@ -52,6 +94,11 @@ public class VehicleInputHandler : MonoBehaviour
         accelAct = input.actions["Accelerator"];
         brakeAct = input.actions["Brake"];
         steerAct = input.actions["Steering"];
+
+        if(serialInput != null)
+        {
+            serialInput.OnSensorStateChanged += HandleInputByShiftLever;
+        }
     }
     void Update()
     {
@@ -76,7 +123,7 @@ public class VehicleInputHandler : MonoBehaviour
     float ProcessingClutchInput()
     {
         mainClutchAxis = ProcessingHandleControllerInput(
-            false,
+            true,
             clutchAct.ReadValue<float>(),
             clutchAct.activeControl?.device
         );
@@ -113,6 +160,10 @@ public class VehicleInputHandler : MonoBehaviour
         {
             OnGearPressed?.Invoke(gear);
         }
+    }
+    void HandleInputByShiftLever(int gear)
+    {
+        OnGearPressed?.Invoke(gear);
     }
     public void OnNeutralInput(InputAction.CallbackContext context) => HandleGearInput(context, 0);
     public void OnGear1Input(InputAction.CallbackContext context) => HandleGearInput(context, 1);

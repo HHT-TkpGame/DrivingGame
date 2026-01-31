@@ -11,15 +11,15 @@ public class StatusUITemp : MonoBehaviour
     [SerializeField] RectTransform needleRect;
     MeterController meterController;
     //FrictionClutch clutchModel;
-    TmpClutchModel clutchModel;
-    TmpTransmissionModel transmission;
-    TmpEngineModel engine;
-    TmpVehicleController vehicleController;
+    FrictionClutch clutchModel;
+    TransmissionModel transmission;
+    EngineModel engine;
+    VehicleController vehicleController;
     public void Initialize(
-        TmpClutchModel clutchModel,
-        TmpTransmissionModel transmission,
-        TmpEngineModel engine,
-        TmpVehicleController vehicleController,
+        FrictionClutch clutchModel,
+        TransmissionModel transmission,
+        EngineModel engine,
+        VehicleController vehicleController,
         float maxRpm
     ){
         this.clutchModel = clutchModel;
@@ -43,6 +43,6 @@ public class StatusUITemp : MonoBehaviour
     {
         gear.text = $"Gear\n{gears[transmission.CurrentGear+1]}";
         meterController.UpdateNeedle(engine.CurrentRPM);
-        velocity.text = vehicleController.SpeedKPH.ToString("f1");
+        velocity.text = vehicleController.SpeedKPH.ToString("f0");
     }
 }

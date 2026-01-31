@@ -4,8 +4,11 @@ public class ApplyCarColor : MonoBehaviour
 {
 	[SerializeField] SaveCarRGB carScriptable;
 	[SerializeField] Material carColor;
-
-	public void SetCarColor()
+    private void Start()
+    {
+		SetCarColor();
+    }
+    public void SetCarColor()
 	{
 		//carScriptable.SetCarColor(carColor);
 		carColor.color = carScriptable.CarColor;
