@@ -190,6 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4556b851632edc64287842a69b6eae8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vehicleController: {fileID: 1961412454}
   uIController: {fileID: 1577695392}
   generator: {fileID: 1998139110}
   fade: {fileID: 1732957878}
@@ -6578,6 +6579,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29c65ba71c367bb4c86bd30d405ff6fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1961412454 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8531117653452833989, guid: d955ee5ea4d84c04d8ee479de9d6d04d, type: 3}
+  m_PrefabInstance: {fileID: 1250345209}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16a5643c73c387c49884df08f72a061f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1998139109

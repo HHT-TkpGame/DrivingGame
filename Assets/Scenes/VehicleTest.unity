@@ -2697,6 +2697,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SiN-circuit (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7862e46c9c26fa047bcc058bf7c6f77e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8915122950687016858, guid: 7862e46c9c26fa047bcc058bf7c6f77e, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 0
@@ -2978,6 +2982,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1547712425}
   m_CullTransparentMesh: 1
+--- !u!1001 &1606423026
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 18.594238
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 177.60031
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
+      propertyPath: m_Name
+      value: SiN-circuit_nothing-tree-kusa
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c8e06d62aa85e4d47afa6c070eb7e262, type: 3}
 --- !u!1 &1647785993
 GameObject:
   m_ObjectHideFlags: 0
@@ -3688,3 +3749,4 @@ SceneRoots:
   - {fileID: 1001132375}
   - {fileID: 4661375939092543965}
   - {fileID: 1521768596}
+  - {fileID: 1606423026}

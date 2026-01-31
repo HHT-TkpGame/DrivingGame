@@ -20,6 +20,7 @@ public class VehicleController : MonoBehaviour
     FrictionClutch clutch;
     Rigidbody rb;
     float vehicleInertiaSmoothed = 0.05f;
+    bool isPlaying = false;
 
     public float SpeedKPH
     {
@@ -79,7 +80,7 @@ public class VehicleController : MonoBehaviour
     void FixedUpdate()
     {
         float dt = Time.fixedDeltaTime;
-        clutch.SetEngagement(inputHandler.ClutchAxis);
+        clutch.SetEngagement(inputHandler.ClutchAxis, isPlaying);
         float averageDrivenWheelRpm = GetAverageDrivenWheelRpm();
         UpdateDrivetrain(averageDrivenWheelRpm, dt);
         //ä»à’ìIÇ»ãÛãCíÔçRçƒåª
@@ -170,5 +171,9 @@ public class VehicleController : MonoBehaviour
         wheelFR.Init(carSpec, true, isFrontDriven, wheelRadius);
         wheelRL.Init(carSpec, false, !isFrontDriven, wheelRadius);
         wheelRR.Init(carSpec, false, !isFrontDriven, wheelRadius);
+    }
+    public void SetIsPlaying()
+    {
+        isPlaying = true;
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TimeAttackController : MonoBehaviour, IInGameController
 {
+    [SerializeField] VehicleController vehicleController;
     [SerializeField] InGameUIController uIController;
     [SerializeField] CheckPointGenerator generator;
     LapTracker tracker;
@@ -61,6 +62,7 @@ public class TimeAttackController : MonoBehaviour, IInGameController
     }
     public void StartGame()
     {
+        vehicleController.SetIsPlaying();
         uIController.Initialize(tracker);
         uIController.StartInGameUI();
     }
