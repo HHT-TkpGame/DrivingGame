@@ -1518,7 +1518,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press tab key to reset the color
+  m_text: Press "x" to reset the color
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 632a154b5f3998744bc75aae42305714, type: 2}
   m_sharedMaterial: {fileID: -3974337090612036059, guid: 632a154b5f3998744bc75aae42305714, type: 2}

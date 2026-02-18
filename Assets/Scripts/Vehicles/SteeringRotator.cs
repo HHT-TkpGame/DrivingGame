@@ -17,6 +17,6 @@ public class SteeringRotator : MonoBehaviour
         // ¶‰ñ‚è^‰E‰ñ‚è‚ª‹t‚È‚ç•„†‚ğ”½“]‚·‚é
         steerObj.transform.localRotation =
             Quaternion.Euler(0f, 0f, zAngle);
-        Debug.Log(handler.SteerAxis);
+        //Debug.Log(handler.SteerAxis);
     }
 }

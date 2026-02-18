@@ -15,17 +15,24 @@ public class WheelEffectController : MonoBehaviour
 	}
 	public void Init(WhetherController w)
 	{
-		value = (int)w.CurrentState;
+        Debug.Log("other.name");
+        value = (int)w.CurrentState;
 		particle = particles[value];
+		StopEffect();
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
-		StartEffect();
+		if (other.CompareTag("Collider")) {
+
+            StartEffect();
+        }
+		
 	}
 	private void OnTriggerExit(Collider other)
 	{
-		StopEffect();
+		if (other.CompareTag("Collider")) { StopEffect(); }
+
 	}
 	public void StartEffect()
 	{
@@ -33,6 +40,7 @@ public class WheelEffectController : MonoBehaviour
 	}
 	public void StopEffect()
 	{
-		particle.Stop();
+		Debug.Log("ddd")
+;		particle.Stop();
 	}
 }
