@@ -1820,6 +1820,7 @@ MonoBehaviour:
   wheelFR: {fileID: 93822439036212588}
   wheelRL: {fileID: 8658261470216409229}
   wheelRR: {fileID: 6615499794797903139}
+  engineSoundController: {fileID: 0}
 --- !u!114 &280965797458392849
 MonoBehaviour:
   m_ObjectHideFlags: 0
