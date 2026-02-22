@@ -13,6 +13,7 @@ public class SelectUIInputHandler : MonoBehaviour
     public event Action<float> OnHorizontalButton;//‰¡
     public event Action OnSelectEnd;
     public event Action OnResetCarColor;
+    public event Action OnStartCancelButton;
 
     float horizontalValue;
     Coroutine horizontalCoroutine;
@@ -101,4 +102,11 @@ public class SelectUIInputHandler : MonoBehaviour
     //          yield return null;
     //}
     //  }
+    public void OnStartCancel(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnStartCancelButton?.Invoke();
+        }
+    }
 }

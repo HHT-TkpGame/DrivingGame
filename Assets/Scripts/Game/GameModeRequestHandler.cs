@@ -10,13 +10,19 @@ public class GameModeRequestHandler : MonoBehaviour
     {
         iRequestable = monoBehaviour as IGameModeRequestable;
         iRequestable.OnModeRequested += OnModeChangeRequested;
+        iRequestable.OnDriveTypeRequested += OnDriveTypeChangeRequested;
     }
     void OnDestroy()
     {
         iRequestable.OnModeRequested -= OnModeChangeRequested;
+        iRequestable.OnDriveTypeRequested -= OnDriveTypeChangeRequested;
     }
     public void OnModeChangeRequested(GameModeState mode)
     {
         modeRequestChannel.Raise(mode);
+    }
+    public void OnDriveTypeChangeRequested(DriveType type)
+    {
+        modeRequestChannel.Raise(type);
     }
 }

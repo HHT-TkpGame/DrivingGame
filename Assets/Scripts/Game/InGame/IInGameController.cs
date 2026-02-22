@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IInGameController
 {
-    void Initialize(VehicleInputHandler handler);
+    void Initialize(VehicleInputHandler handler, DriveType type);
     void StartGame();
     void OpenMenu();
     void StartResult();

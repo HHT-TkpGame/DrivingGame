@@ -35,9 +35,9 @@ public class VehicleController : MonoBehaviour
 
     int drivenWheelCount;
 
-    void Awake()
+    public void Initialize(DriveType type)
     {
-        SetIsPlaying();
+        driveType = type;
         //‚±‚±Initialize‚É‚·‚é‚×‚«‚©‚à
         engine = new EngineModel(carSpec, inputHandler);
         if (driveType == DriveType.Manual)
@@ -75,7 +75,7 @@ public class VehicleController : MonoBehaviour
             driveType
         );
         rb = GetComponent<Rigidbody>();
-        rb.centerOfMass = new Vector3(0f, -0.35f, 0f);
+        rb.centerOfMass = new Vector3(0f, -0.1f, 0f);
         rotator.Initialize(inputHandler);
         cameraController.Initialize(inputHandler);
         engineSoundController.Initialize(this, carSpec, engine, inputHandler);

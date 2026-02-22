@@ -10,6 +10,7 @@ public class UIMover : MonoBehaviour
     bool isReturning;
     [SerializeField] float speed;
     [SerializeField] float returnPos;
+    [SerializeField] bool onlyReturn;
     float targetPos;
     float startPosX;
     public void StartMove()
@@ -27,7 +28,10 @@ public class UIMover : MonoBehaviour
     void Start()
     {
         startPosX = rect.anchoredPosition.x;
-        rect.anchoredPosition = new Vector3(returnPos, rect.anchoredPosition.y, 0f);
+        if (!onlyReturn)
+        {
+            rect.anchoredPosition = new Vector3(returnPos, rect.anchoredPosition.y, 0f);
+        }
     }
 
     // Update is called once per frame

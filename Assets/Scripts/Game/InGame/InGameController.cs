@@ -10,7 +10,7 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
     [SerializeField] VehicleInputHandler vehicleInputHandler;
     IInGameController iGameController;
     InGameSceneState currentState = InGameSceneState.Initializing;
-    void Start()
+    void Awake()
     {
         SetState(InGameSceneState.Initializing);
     }
@@ -46,7 +46,7 @@ public class InGameController : MonoBehaviour, IGameStateRequestable
             case GameModeState.FreeDrive:
                 break;
         }
-        iGameController.Initialize(vehicleInputHandler);
+        iGameController.Initialize(vehicleInputHandler, modeContext.currentType);
         SetSubscribers();
     }
     void SetSubscribers()

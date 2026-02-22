@@ -10,7 +10,7 @@ public class FreeDriveController : MonoBehaviour, IInGameController
     public event Action OnMenuDriveEnd;
     public event Action OnTransitionEnd;
     [SerializeField] VehicleInputHandler vehicleInputHandler;
-    public void Initialize(VehicleInputHandler handler)
+    public void Initialize(VehicleInputHandler handler, DriveType type)
     {
         
     }

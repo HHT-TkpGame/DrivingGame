@@ -21,7 +21,7 @@ public class TimeAttackController : MonoBehaviour, IInGameController
     [SerializeField] MenuUIController menuUIController;
     VehicleInputHandler handler;
 
-    public void Initialize(VehicleInputHandler handler)
+    public void Initialize(VehicleInputHandler handler, DriveType type)
     {
         this.handler = handler; 
         tracker = new LapTracker();
@@ -40,6 +40,7 @@ public class TimeAttackController : MonoBehaviour, IInGameController
 
         this.handler.InMenuClick += InMenuClick;
         this.handler.MenuArrows += MenuScroll;
+        vehicleController.Initialize(type);
     }
 
     void MenuDriveEnd()

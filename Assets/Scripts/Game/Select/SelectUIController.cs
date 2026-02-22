@@ -7,20 +7,28 @@ public class SelectUIController : MonoBehaviour
 {
     public event Action<GameModeState> OnModeSelected;
     public event Action OnModeSelectEnd;
+    public event Action<DriveType> OnModeDriveTypeSelected;
+    public event Action OnDriveTypeSelectEnd;
     public event Action OnCustomizeEnd;
     [SerializeField] CustomizeController customizeController;
     [SerializeField] CarColorSetter carColorSetter;
     [SerializeField] Button taModeButton;
     [SerializeField] Button freeModeButton;
     [SerializeField] UIMover modeMover;
+    [SerializeField] UIMover driveModeMover;
     [SerializeField] UIMover customMover;
     [SerializeField] Transform[] modeButtons;
+    [SerializeField] Transform[] typeButtons;
 
     GameModeState currentMode = GameModeState.FreeDrive;
+    DriveType currentType = DriveType.Manual;
     [SerializeField] GameObject cursorImage;
+    [SerializeField] GameObject driveTypeCursor;
+    [SerializeField] GameStartPanel startPanel;
     
     //ゲームモードを選ぶときに選ぶ前にクリックされるの防止
     bool isModeSelecting;
+    bool isTypeSelecting;
 
     [SerializeField] AudioClip arrowSe;
     [SerializeField] AudioClip clickSe;
@@ -31,6 +39,7 @@ public class SelectUIController : MonoBehaviour
     void Start()
     {
         modeMover.OnReturnEnd += EndModeSelect;
+        driveModeMover.OnReturnEnd += EndDriveTypeSelect;
       
         //ここのボタン群は後からコントローラ入力に変えるのでクリック制御は一旦しない
         //taModeButton.onClick.AddListener(
@@ -45,10 +54,12 @@ public class SelectUIController : MonoBehaviour
         customizeController.OnCustomEnd += carColorSetter.SaveCarColor;
         customizeController.OnCustomEnd += StartEndSe;
         customMover.OnReturnEnd += EndCustomize;
+        startPanel.OnStartRequested += customizeController.EndCustomize;
 
         se = GetComponent<AudioSource>();
         
         cursorImage.SetActive( false );
+        driveTypeCursor.SetActive( false );
     }
 
     void StartEndSe()
@@ -70,7 +81,13 @@ public class SelectUIController : MonoBehaviour
     }
     public void FinishSelectScene()
     {
-        customizeController.EndCustomize();
+        startPanel.CheckStart();
+        se.clip = clickSe;
+        se.Play();
+    }
+    public void CancelStart()
+    {
+        startPanel.SetVisible(false);
     }
 
 	public void SetColorVert(float f)
@@ -132,6 +149,46 @@ public class SelectUIController : MonoBehaviour
     void EndModeSelect()
     {
         OnModeSelectEnd?.Invoke();
+    }
+    public void SetDriveType()
+    {
+        //currentModeを反転
+        currentType = currentType == DriveType.Automatic ?
+            DriveType.Manual : DriveType.Automatic;
+        driveTypeCursor.transform.localPosition = typeButtons[(int)currentType].localPosition;
+
+        se.clip = arrowSe;
+        se.Play();
+
+        if (!isTypeSelecting)
+        {
+            isTypeSelecting = true;
+            driveTypeCursor.SetActive(isTypeSelecting);
+        }
+    }
+
+
+    public void SelectDriveType()
+    {
+        if (!isTypeSelecting) { return; }
+        SelectDriveType(currentType);
+    }
+
+    void SelectDriveType(DriveType type)
+    {
+        se.clip = clickSe;
+        se.Play();
+
+        OnModeDriveTypeSelected?.Invoke(type);
+        driveModeMover.Return();
+    }
+    public void StartDriveTypeSelect()
+    {
+        driveModeMover.StartMove();
+    }
+    void EndDriveTypeSelect()
+    {
+        OnDriveTypeSelectEnd?.Invoke();
     }
     public void StartCustomize()
     {

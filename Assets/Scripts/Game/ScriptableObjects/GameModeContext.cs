@@ -9,4 +9,9 @@ public class GameModeContext : ScriptableObject
     {
         currentMode = mode;
     }
+    public DriveType currentType;
+    public void SetType(DriveType type)
+    {
+        currentType = type;
+    }
 }
