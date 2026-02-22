@@ -37,7 +37,7 @@ public class WhetherController : MonoBehaviour
 	[SerializeField] MeshRenderer groundMat;
 	[SerializeField] MeshRenderer glassMat;
 	[SerializeField] MeshRenderer courseMats;
-	[SerializeField] MeshRenderer slopeMat;
+	//[SerializeField] MeshRenderer slopeMat;
 	[SerializeField] WheelEffectController[] wheelEffectControllers;
 
 	
@@ -111,7 +111,7 @@ public class WhetherController : MonoBehaviour
 				glassMat.material = sunnyGlassMat;
 				mats[1] = sunnyCourseMat;
 				courseMats.materials = mats;
-				slopeMat.material = sunnyCourseMat;
+				//slopeMat.material = sunnyCourseMat;
 				courseCollider.material = sunnyCoursePhysic;
 				groundCollider.material = sunnyGroundPhysic;
 
@@ -126,7 +126,7 @@ public class WhetherController : MonoBehaviour
 				groundMat.material = rainyGroundMat;
 				glassMat.material = rainyGlassMat;
 				courseMats.materials[1] = rainyCourseMat;
-				slopeMat.material = rainyCourseMat;
+				//slopeMat.material = rainyCourseMat;
 				courseCollider.material = rainyCoursePhysic;
 				groundCollider.material = rainyGroundPhysic;
 
