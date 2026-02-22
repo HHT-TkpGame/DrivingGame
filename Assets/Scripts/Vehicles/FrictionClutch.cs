@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FrictionClutch
+public class FrictionClutch: IClutchModel
 {
     public float Engagement {  get; private set; }
     //ƒNƒ‰ƒbƒ`‚ÌÚ‘±ó‘Ô(1‚ªÚ‘±, 0‚ªØ’f)
