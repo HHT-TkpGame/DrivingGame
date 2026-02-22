@@ -2250,6 +2250,22 @@ PrefabInstance:
       propertyPath: engineSoundController
       value: 
       objectReference: {fileID: 349871073}
+    - target: {fileID: 9037385791970873754, guid: d955ee5ea4d84c04d8ee479de9d6d04d, type: 3}
+      propertyPath: m_ForceAppPointDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9037385791970873754, guid: d955ee5ea4d84c04d8ee479de9d6d04d, type: 3}
+      propertyPath: m_SuspensionSpring.damper
+      value: 4500
+      objectReference: {fileID: 0}
+    - target: {fileID: 9037385791970873754, guid: d955ee5ea4d84c04d8ee479de9d6d04d, type: 3}
+      propertyPath: m_SuspensionSpring.spring
+      value: 35000
+      objectReference: {fileID: 0}
+    - target: {fileID: 9037385791970873754, guid: d955ee5ea4d84c04d8ee479de9d6d04d, type: 3}
+      propertyPath: m_SuspensionSpring.targetPosition
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7562148408892044911, guid: d955ee5ea4d84c04d8ee479de9d6d04d, type: 3}

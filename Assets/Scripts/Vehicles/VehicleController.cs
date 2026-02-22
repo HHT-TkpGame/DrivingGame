@@ -51,7 +51,7 @@ public class VehicleController : MonoBehaviour
         else
         {
             transmission = new ATTransmission(
-                3.0f,
+                2.2f,
                 -3.0f,
                 carSpec.FinalDriveRatio,
                 300f,
@@ -75,6 +75,7 @@ public class VehicleController : MonoBehaviour
             driveType
         );
         rb = GetComponent<Rigidbody>();
+        rb.centerOfMass = new Vector3(0f, -0.35f, 0f);
         rotator.Initialize(inputHandler);
         cameraController.Initialize(inputHandler);
         engineSoundController.Initialize(this, carSpec, engine, inputHandler);
@@ -178,6 +179,10 @@ public class VehicleController : MonoBehaviour
             );
         //Debug.Log(clutchTorque);
         engine.ApplyExternalTorque(-clutchTorque, deltaTime);
+        if (driveType == DriveType.Automatic)
+        {
+            engine.EnforceIdleRpmForAT();
+        }
         float driveScale = transmission.GetDriveTorqueScale(SpeedKPH);
         float drivenTorque = clutchTorque * transmission.CurrentRatio / drivenWheelCount;//ãÏìÆó÷ÇÃêîÇ≈äÑÇÈ
         drivenTorque *= driveScale;

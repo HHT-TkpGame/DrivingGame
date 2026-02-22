@@ -114,5 +114,5 @@ MonoBehaviour:
   reverseRatio: -3.59
   wheelRadius: 0.368
   isFrontDriven: 0
-  maxBrakeTorqueFront: 1800
+  maxBrakeTorqueFront: 2000
   maxBrakeTorqueRear: 900

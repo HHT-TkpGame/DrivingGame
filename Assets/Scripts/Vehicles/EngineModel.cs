@@ -140,7 +140,7 @@ public class EngineModel
             float rpmDiff = idleRPM - currentRPM;
 
             // âÒì]Ç™â∫Ç™Ç¡ÇΩÇÁÇ≥ÇÁÇ…äJÇØÇÈÅiPêßå‰Åj
-            float correction = Mathf.Clamp(rpmDiff * 0.008f, 0f, 0.05f);
+            float correction = Mathf.Clamp(rpmDiff * 0.012f, 0f, 0.1f);
 
             effectiveThrottle += correction;
         }
@@ -158,6 +158,16 @@ public class EngineModel
         engineAngularVelocity = currentRPM * 2f * Mathf.PI / 60f;
 
         OnEngineStarted?.Invoke();
+
+    }
+    public void EnforceIdleRpmForAT()
+    {
+        float idle = idleRPM;
+
+        if (CurrentRPM < idle)
+        {
+            currentRPM = idle;
+        }
 
     }
 }
