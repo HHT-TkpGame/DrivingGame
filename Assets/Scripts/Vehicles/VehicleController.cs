@@ -16,12 +16,13 @@ public class VehicleController : MonoBehaviour
     [SerializeField] WheelController wheelRR;
     WheelController[] wheels;
     EngineModel engine;
-    TransmissionModel transmission;
-    FrictionClutch clutch;
+    ITransmissionModel transmission;
+    IClutchModel clutch;
     Rigidbody rb;
     float vehicleInertiaSmoothed = 0.05f;
     bool isPlaying = false;
     [SerializeField] EngineSoundController engineSoundController;
+    DriveType driveType = DriveType.Automatic;//TimeAttackControllerÇ©ÇÁéÛÇØéÊÇÈ
 
     public float SpeedKPH
     {
@@ -36,12 +37,28 @@ public class VehicleController : MonoBehaviour
 
     void Awake()
     {
+        SetIsPlaying();
+        //Ç±Ç±InitializeÇ…Ç∑ÇÈÇ◊Ç´Ç©Ç‡
         engine = new EngineModel(carSpec, inputHandler);
-        transmission = new TransmissionModel(carSpec);
-        clutch = new FrictionClutch(
-            clutchCurve.Curve,
-            1000f
-        );
+        if (driveType == DriveType.Manual)
+        {
+            transmission = new TransmissionModel(carSpec);
+            clutch = new FrictionClutch(
+                clutchCurve.Curve,
+                1000f
+            );
+        }
+        else
+        {
+            transmission = new ATTransmission(
+                3.0f,
+                -3.0f,
+                carSpec.FinalDriveRatio,
+                300f,
+                30f
+            );
+            clutch = new ATClutch();
+        }
         inputHandler.OnGearPressed += transmission.SetGear;
         wheels = new WheelController[]{
             wheelFR,
@@ -54,7 +71,8 @@ public class VehicleController : MonoBehaviour
             transmission,
             engine,
             this,
-            carSpec.MaxRPM
+            carSpec.MaxRPM,
+            driveType
         );
         rb = GetComponent<Rigidbody>();
         rotator.Initialize(inputHandler);
@@ -84,6 +102,7 @@ public class VehicleController : MonoBehaviour
         float dt = Time.fixedDeltaTime;
         clutch.SetEngagement(inputHandler.ClutchAxis, isPlaying);
         float averageDrivenWheelRpm = GetAverageDrivenWheelRpm();
+        transmission.Tick(SpeedKPH, dt);
         UpdateDrivetrain(averageDrivenWheelRpm, dt);
         //ä»à’ìIÇ»ãÛãCíÔçRçƒåª
         float speed = rb.linearVelocity.magnitude;
@@ -159,8 +178,9 @@ public class VehicleController : MonoBehaviour
             );
         //Debug.Log(clutchTorque);
         engine.ApplyExternalTorque(-clutchTorque, deltaTime);
-
+        float driveScale = transmission.GetDriveTorqueScale(SpeedKPH);
         float drivenTorque = clutchTorque * transmission.CurrentRatio / drivenWheelCount;//ãÏìÆó÷ÇÃêîÇ≈äÑÇÈ
+        drivenTorque *= driveScale;
         foreach (WheelController wheel in wheels)
         {
             wheel.ApplyInput(drivenTorque, inputHandler.BrakeAxis, inputHandler.SteerAxis);

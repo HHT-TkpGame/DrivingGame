@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// エンジンの出力（トルク・回転数）を、ギア比を通して車輪側に伝える
 /// </summary>
-public class TransmissionModel
+public class TransmissionModel: ITransmissionModel
 {
     enum GearState
     {
@@ -54,4 +54,9 @@ public class TransmissionModel
                 break;
         }
     }
+    // MTは速度上限など無いので空実装
+    public void Tick(float speedKph, float deltaTime) { }
+
+    // MTは常に1
+    public float GetDriveTorqueScale(float speedKph) => 1f;
 }
